@@ -29,12 +29,8 @@ public class GameThread extends Thread {
            // AppConstants.getGameEngine().update();
 
             synchronized (mySurfaceHolder){
-                //iscrtavanje pozadine
-                Rect backgroundField = new Rect(0,0,AppConstants.SCREEN_WIDTH, AppConstants.SCREEN_HEIGHT);
-                canvas.drawBitmap(AppConstants.getBackgroundicture(), null, backgroundField,null);
-
                 //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje
-                //AppConstants.getGameEngine().draw(canvas);
+                AppConstants.getGameEngine().draw(canvas);
             }
             mySurfaceHolder.unlockCanvasAndPost(canvas);
 

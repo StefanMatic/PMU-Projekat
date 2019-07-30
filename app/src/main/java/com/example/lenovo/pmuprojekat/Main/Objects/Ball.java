@@ -7,13 +7,12 @@ import android.graphics.Paint;
 import com.example.lenovo.pmuprojekat.Main.Handlers.CollisionHandler;
 
 public abstract class Ball implements CollisionHandler {
-    private Vector2D position;
-    private Vector2D velocity;
-    private float mass;
-    private float radius;
-    private Bitmap image;
-    private boolean selected;
-    private Paint paint;
+    protected Vector2D position;
+    protected Vector2D velocity;
+    protected float mass;
+    protected float radius;
+    protected Bitmap image;
+    protected Paint paint;
 
 
     public Ball(Vector2D position, float mass, float radius, Bitmap img) {
@@ -23,7 +22,6 @@ public abstract class Ball implements CollisionHandler {
         this.image = img;
 
         velocity = null;
-        selected = false;
         paint = new Paint();
     }
 
@@ -70,13 +68,5 @@ public abstract class Ball implements CollisionHandler {
 
     public void setImage(Bitmap image) {
         this.image = image;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
     }
 }

@@ -22,6 +22,37 @@ public class BitmapBank {
         this.filed = BitmapFactory.decodeResource(res, R.drawable.field0);
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected  =BitmapFactory.decodeResource(res, R.drawable.selected);
+
+        resizeImages();
+    }
+
+    //Slike se postavljaju u proporcije koje ce biti koriscene u igri
+    private void resizeImages() {
+        Bitmap resizePlayer1 = Bitmap.createScaledBitmap(this.player1Flag,
+                (int)(AppConstants.PLAYER_RADIUS*2),
+                (int)(AppConstants.PLAYER_RADIUS*2),
+                true);
+        this.player1Flag = resizePlayer1;
+
+        Bitmap resizePlayer2 = Bitmap.createScaledBitmap(this.player2Flag,
+                (int)(AppConstants.PLAYER_RADIUS*2),
+                (int)(AppConstants.PLAYER_RADIUS*2),
+                true);
+        this.player2Flag = resizePlayer2;
+
+        Bitmap resizeField = Bitmap.createScaledBitmap(this.filed,
+                AppConstants.SCREEN_WIDTH,
+                AppConstants.SCREEN_HEIGHT,
+                true);
+        this.filed = resizeField;
+
+        Bitmap resizeBall = Bitmap.createScaledBitmap(this.ball,
+                (int)(AppConstants.SOCCERBALL_RADIUS*2),
+                (int)(AppConstants.SOCCERBALL_RADIUS*2),
+                true);
+        this.ball = resizeBall;
+
+        //Treba jos da se resize-uje i selected
     }
 
     //Moze da se ubace sve slike osim slike lopte i selektovanog igraca
@@ -32,6 +63,8 @@ public class BitmapBank {
 
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
+
+        resizeImages();
     }
 
     public Bitmap getPlayer1Flag() {
@@ -40,6 +73,7 @@ public class BitmapBank {
 
     public void setPlayer1Flag(Bitmap player1Flag) {
         this.player1Flag = player1Flag;
+        resizeImages();
     }
 
     public Bitmap getPlayer2Flag() {
@@ -48,6 +82,7 @@ public class BitmapBank {
 
     public void setPlayer2Flag(Bitmap player2Flag) {
         this.player2Flag = player2Flag;
+        resizeImages();
     }
 
     public Bitmap getFiled() {
@@ -56,5 +91,6 @@ public class BitmapBank {
 
     public void setFiled(Bitmap filed) {
         this.filed = filed;
+        resizeImages();
     }
 }

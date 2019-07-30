@@ -34,7 +34,8 @@
                 android:text="NEW GAME"
                 android:fontFamily="@font/game"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:onClick="startNewGame"/>
 
             <Button
                 android:layout_width="wrap_content"

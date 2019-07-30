@@ -11,8 +11,16 @@ import com.example.lenovo.pmuprojekat.Main.Objects.GameEngine;
 public class AppConstants {
     //Mogao bih da dodam i gameStatistics ovde kako bi uvek moglo da se dode do njih
 
+
+    //Constants
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
+
+    public static float SOCCERBALL_MASS = 10;
+    public static float PLAYER_MASS = 7;
+
+    public static float SOCCERBALL_RADIUS = 30;
+    public static float PLAYER_RADIUS = 50;
 
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;
@@ -26,8 +34,8 @@ public class AppConstants {
         SCREEN_HEIGHT = displayMetrics.heightPixels;
         SCREEN_WIDTH = displayMetrics.widthPixels;
 
-        gameEngine = new GameEngine();
         bitmapBank = new BitmapBank(context.getResources());
+        gameEngine = new GameEngine();
     }
 
     public static BitmapBank getBitmapBank() {
