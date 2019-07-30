@@ -52,7 +52,12 @@ public class BitmapBank {
                 true);
         this.ball = resizeBall;
 
-        //Treba jos da se resize-uje i selected
+        //Stavljamo da bude malo vece od velicine igraca
+        Bitmap resizeSelected = Bitmap.createScaledBitmap(this.selected,
+                (int)(AppConstants.PLAYER_RADIUS*2.4),
+                (int)(AppConstants.PLAYER_RADIUS*2.4),
+                true);
+        this.selected = resizeSelected;
     }
 
     //Moze da se ubace sve slike osim slike lopte i selektovanog igraca
@@ -92,5 +97,13 @@ public class BitmapBank {
     public void setFiled(Bitmap filed) {
         this.filed = filed;
         resizeImages();
+    }
+
+    public Bitmap getBall() {
+        return ball;
+    }
+
+    public Bitmap getSelected() {
+        return selected;
     }
 }

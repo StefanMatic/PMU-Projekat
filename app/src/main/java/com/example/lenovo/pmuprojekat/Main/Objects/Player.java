@@ -1,6 +1,9 @@
 package com.example.lenovo.pmuprojekat.Main.Objects;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
+import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 
 public class Player extends Ball {
     private boolean selected;
@@ -17,6 +20,17 @@ public class Player extends Ball {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (selected)
+            canvas.drawBitmap(AppConstants.getBitmapBank().getSelected(),
+                    (float) (position.getX() - 1.2 * radius),
+                    (float) (position.getY() - 1.2 * radius),
+                    paint);
+
+        super.draw(canvas);
     }
 
     @Override

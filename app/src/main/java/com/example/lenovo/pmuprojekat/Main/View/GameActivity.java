@@ -8,6 +8,7 @@ import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.R;
 
 public class GameActivity extends AppCompatActivity {
@@ -51,11 +52,17 @@ public class GameActivity extends AppCompatActivity {
         return false;
     }
 
-    private void OnActionUp(MotionEvent event) {
+    private void OnActionDown(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
 
+        AppConstants.getGameEngine().checkIfSelected(x,y);
     }
 
-    private void OnActionDown(MotionEvent event) {
+    private void OnActionUp(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
 
+        AppConstants.getGameEngine().makeMove(x,y);
     }
 }
