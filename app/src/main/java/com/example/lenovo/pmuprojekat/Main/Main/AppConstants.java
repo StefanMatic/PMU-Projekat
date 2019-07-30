@@ -6,12 +6,16 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.example.lenovo.pmuprojekat.Main.Objects.GameEngine;
+
 public class AppConstants {
+    //Mogao bih da dodam i gameStatistics ovde kako bi uvek moglo da se dode do njih
+
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
-    private static Bitmap backgroundPicture;
-    //private static GameEngine gameEngine;
+    private static BitmapBank bitmapBank;
+    private static GameEngine gameEngine;
 
     public static void initialize(Context context){
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
@@ -22,21 +26,25 @@ public class AppConstants {
         SCREEN_HEIGHT = displayMetrics.heightPixels;
         SCREEN_WIDTH = displayMetrics.widthPixels;
 
-        //gameEngine
-        // gameEngine = new GameEngine();
+        gameEngine = new GameEngine();
+        bitmapBank = new BitmapBank(context.getResources());
     }
 
-    public static void setBackgroundPicture(Bitmap picture) {
-        AppConstants.backgroundPicture = picture;
+    public static BitmapBank getBitmapBank() {
+        return bitmapBank;
     }
 
-    public static Bitmap getBackgroundicture() {
-        return backgroundPicture;
+    public static void setBitmapBank(BitmapBank bitmapBank) {
+        AppConstants.bitmapBank = bitmapBank;
     }
 
-    //public static GameEngine getGameEngine() {
-    //    return null;
-    //}
+    public static GameEngine getGameEngine() {
+        return gameEngine;
+    }
+
+    public static void setGameEngine(GameEngine gameEngine) {
+        AppConstants.gameEngine = gameEngine;
+    }
 
     public static void StopThread(Thread thread)
     {
