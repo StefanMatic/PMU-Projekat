@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class GameEngine {
     private Vector2D touchDown;
+    private Player selectedPlayer;
 
     private ArrayList<Ball> allObjectsOnField = null;
 
@@ -17,6 +18,7 @@ public class GameEngine {
         initFiledAndPlayers();
 
         touchDown = null;
+        selectedPlayer = null;
     }
 
     public void initFiledAndPlayers(){
@@ -56,6 +58,7 @@ public class GameEngine {
             if (ball instanceof Player){
                 if (((Player) ball).checkIfSelected(x,y)){
                     ((Player) ball).setSelected(true);
+                    selectedPlayer = (Player) ball;
                 }
             }
         }

@@ -26,8 +26,7 @@ public abstract class Ball implements CollisionHandler {
     }
 
     public void draw(Canvas canvas){
-        Bitmap resized = Bitmap.createScaledBitmap(image, (int) radius * 2, (int) radius * 2, true);
-        canvas.drawBitmap(resized, this.position.getX()-radius,this.position.getY()-radius, paint);
+        canvas.drawBitmap(image, this.position.getX()-radius,this.position.getY()-radius, paint);
     }
 
     public Vector2D getPosition() {
