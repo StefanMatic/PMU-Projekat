@@ -26,7 +26,7 @@ public class GameThread extends Thread {
 
         while (isRunning){
             Canvas canvas = mySurfaceHolder.lockCanvas();
-           // AppConstants.getGameEngine().update();
+            AppConstants.getGameEngine().update();
 
             synchronized (mySurfaceHolder){
                 //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje

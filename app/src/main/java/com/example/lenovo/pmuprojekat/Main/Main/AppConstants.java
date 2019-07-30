@@ -16,11 +16,16 @@ public class AppConstants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
+    public static final float FRICTION = 0.95f;
+
     public static float SOCCERBALL_MASS = 10;
     public static float PLAYER_MASS = 7;
 
     public static float SOCCERBALL_RADIUS = 30;
     public static float PLAYER_RADIUS = 50;
+
+    public static float PLAYER_VELOCITY_SPEED = 6;
+    public static float COMPUTER_VELOCITY_SPEED = 3;
 
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;

@@ -81,6 +81,14 @@ public class Vector2D {
         return result;
     }
 
+    public Vector2D divide(float scaleFactor)
+    {
+        Vector2D result = new Vector2D();
+        result.setX(this.getX() / scaleFactor);
+        result.setY(this.getY() / scaleFactor);
+        return result;
+    }
+
     public Vector2D normalize()
     {
         float len = getLength();

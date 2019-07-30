@@ -12,6 +12,8 @@ public class GameEngine {
     private Vector2D touchDown;
     private Player selectedPlayer;
 
+    static final Object _sync = new Object();
+
     private ArrayList<Ball> allObjectsOnField = null;
 
     public GameEngine() {
@@ -33,6 +35,23 @@ public class GameEngine {
                 AppConstants.getBitmapBank().getBall()));
     }
 
+    public void update(){
+        updateAllObjects();
+    }
+
+    private void updateAllObjects() {
+        synchronized (_sync)
+        {
+            for(Ball b : allObjectsOnField)
+            {
+                //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
+                b.updatePosition();
+            }
+        }
+    }
+
+
+
     //iscrtavanje svih elemenata
     public void draw(Canvas canvas) {
         drawBackground(canvas);
@@ -44,8 +63,10 @@ public class GameEngine {
 
     //ide se redom i iscrtava se svaki objekat koji se nalazi na terenu
     private void drawPlayers(Canvas canvas) {
-        for (Ball ball : allObjectsOnField) {
-            ball.draw(canvas);
+        synchronized (_sync) {
+            for (Ball ball : allObjectsOnField) {
+                ball.draw(canvas);
+            }
         }
     }
 
@@ -72,7 +93,11 @@ public class GameEngine {
     //Nakon dizanja prsta pokrece se potez
     public void makeMove(float x, float y) {
         //izracunati i postaviti velocity
-
+        if (selectedPlayer != null){
+            Vector2D movement = new Vector2D(x,y).subtract(selectedPlayer.position);
+            Vector2D newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
+            selectedPlayer.setVelocity(newVelocity);
+        }
 
         //resetovanje
         resetForNextTurn();
