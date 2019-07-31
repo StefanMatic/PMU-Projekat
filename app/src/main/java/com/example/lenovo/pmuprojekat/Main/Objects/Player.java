@@ -33,16 +33,6 @@ public class Player extends Ball {
         super.draw(canvas);
     }
 
-    @Override
-    public boolean checkCollision() {
-        return false;
-    }
-
-    @Override
-    public void resolveCollision() {
-        //za sada samo da radi
-    }
-
     public boolean checkIfSelected(float x, float y) {
         if (Math.abs(x - position.getX()) < radius && Math.abs(y - position.getY()) < radius)
             return true;

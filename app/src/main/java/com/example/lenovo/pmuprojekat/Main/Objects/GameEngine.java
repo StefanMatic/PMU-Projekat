@@ -29,27 +29,46 @@ public class GameEngine {
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer1Flag()));
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3),
+                AppConstants.PLAYER_MASS,
+                AppConstants.PLAYER_RADIUS,
+                AppConstants.getBitmapBank().getPlayer1Flag()));
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3 * 2),
+                AppConstants.PLAYER_MASS,
+                AppConstants.PLAYER_RADIUS,
+                AppConstants.getBitmapBank().getPlayer1Flag()));
         allObjectsOnField.add(new SoccerBall(new Vector2D(AppConstants.SCREEN_WIDTH * 2 / 3, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.SOCCERBALL_MASS,
                 AppConstants.SOCCERBALL_RADIUS,
                 AppConstants.getBitmapBank().getBall()));
     }
 
-    public void update(){
+    public void update() {
         updateAllObjects();
     }
 
     private void updateAllObjects() {
-        synchronized (_sync)
-        {
-            for(Ball b : allObjectsOnField)
-            {
+        synchronized (_sync) {
+            for (Ball b : allObjectsOnField) {
                 //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
                 b.updatePosition();
             }
+
+            updateBallCollision();
         }
     }
 
+    private void updateBallCollision() {
+        synchronized (_sync) {
+            for (int i = 0; i < allObjectsOnField.size(); i++) {
+                for (int j = i + 1; j < allObjectsOnField.size(); j++) {
+                    if (allObjectsOnField.get(i).checkBallCollision(allObjectsOnField.get(j))){
+                        allObjectsOnField.get(i).resolveBallCollision(allObjectsOnField.get(j));
+                    }
+                }
+            }
+        }
+    }
 
 
     //iscrtavanje svih elemenata
@@ -93,8 +112,8 @@ public class GameEngine {
     //Nakon dizanja prsta pokrece se potez
     public void makeMove(float x, float y) {
         //izracunati i postaviti velocity
-        if (selectedPlayer != null){
-            Vector2D movement = new Vector2D(x,y).subtract(selectedPlayer.position);
+        if (selectedPlayer != null) {
+            Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
             Vector2D newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
             selectedPlayer.setVelocity(newVelocity);
         }

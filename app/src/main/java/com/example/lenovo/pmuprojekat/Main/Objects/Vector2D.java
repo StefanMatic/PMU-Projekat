@@ -91,19 +91,20 @@ public class Vector2D {
 
     public Vector2D normalize()
     {
+        Vector2D result = new Vector2D();
         float len = getLength();
         if (len != 0.0f)
         {
-            this.setX(this.getX() / len);
-            this.setY(this.getY() / len);
+            result.setX(this.getX() / len);
+            result.setY(this.getY() / len);
         }
         else
         {
-            this.setX(0.0f);
-            this.setY(0.0f);
+            result.setX(0.0f);
+            result.setY(0.0f);
         }
 
-        return this;
+        return result;
     }
 
     public String toString()

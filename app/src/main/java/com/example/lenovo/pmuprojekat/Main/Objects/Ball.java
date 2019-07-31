@@ -62,7 +62,49 @@ public abstract class Ball implements CollisionHandler {
         velocity = velocity.multiply(AppConstants.FRICTION);
     }
 
+    @Override
+    public boolean checkBallCollision(Ball ball) {
+        float distance = position.getDistance(ball.getPosition());
+        if (distance <= radius + ball.getRadius())
+            return true;
 
+        return false;
+    }
+
+    @Override
+    public void resolveBallCollision(Ball ball) {
+        //prvi korak je da nademo jedinicne vektore normale i tangente
+        Vector2D normalVector = ball.position.subtract(position);
+        Vector2D unitNormalVector = normalVector.normalize();
+
+        Vector2D unitTangentVector = new Vector2D(-unitNormalVector.getY(), unitNormalVector.getX());
+
+        //Drugi korak je da izracunamo skalarne vrednosti velocity
+        float normalVelocity1 = unitNormalVector.dot(velocity);
+        float tangentialVelocity1 = unitTangentVector.dot(velocity);
+
+        float normalVelocity2 = unitNormalVector.dot(ball.velocity);
+        float tangentialVelocity2 = unitTangentVector.dot(ball.velocity);
+
+        //Treci korak je izracunavanje novih tangecialnih vektora
+        float newTangentialVelocity1 = tangentialVelocity1;
+        float newTangentialVelocity2 = tangentialVelocity2;
+
+        //Cetvrti korak je da se nadu nove vektore noramle
+        float newNormalVelocity1  = (normalVelocity1*(mass - ball.getMass()) + 2*ball.getMass()*normalVelocity2)/(mass + ball.getMass());
+        float newNormalVelocity2  = (normalVelocity2*(ball.getMass() - mass) + 2*mass*normalVelocity1)/(mass + ball.getMass());
+
+        //peti korak je da vratimo novopronadene vektore u vektorski oblik
+        Vector2D newNormalVelocity1Vector = unitNormalVector.multiply(newNormalVelocity1);
+        Vector2D newTangetVelocity1Vector = unitTangentVector.multiply(newTangentialVelocity1);
+
+        Vector2D newNormalVelocity2Vector = unitNormalVector.multiply(newNormalVelocity2);
+        Vector2D newTangetVelocity2Vector = unitTangentVector.multiply(newTangentialVelocity2);
+
+        //sesti korak je da se opet sastave prethodno izracunate velocity-s i postavljanje tih vrednosti
+        velocity = newNormalVelocity1Vector.add(newTangetVelocity1Vector);
+        ball.setVelocity(newNormalVelocity2Vector.add(newTangetVelocity2Vector));
+    }
 
     public Vector2D getPosition() {
         return position;

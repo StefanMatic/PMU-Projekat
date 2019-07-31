@@ -7,13 +7,4 @@ public class SoccerBall extends Ball {
         super(position, mass, radius, img);
     }
 
-    @Override
-    public boolean checkCollision() {
-        return false;
-    }
-
-    @Override
-    public void resolveCollision() {
-
-    }
 }
