@@ -65,7 +65,7 @@ public abstract class Ball implements CollisionHandler {
     @Override
     public boolean checkBallCollision(Ball ball) {
         float distance = position.getDistance(ball.getPosition());
-        if (distance <= radius + ball.getRadius())
+        if (distance < radius + ball.getRadius())
             return true;
 
         return false;
@@ -117,26 +117,30 @@ public abstract class Ball implements CollisionHandler {
         // sphere intersecting but moving away from each other already
         if (vn > 0.0f) return;
 
-        double mtd = calculateSeparationDistance(ball);
-        if (mtd > 0){
-            System.out.println("*******************");
-            System.out.println(mtd);
-            position = position.add(new Vector2D((float)mtd*velocity.getX(), (float)mtd*velocity.getY()));
+        if (checkBallCollision(ball)) {
+            calculateSeparationDistance(ball);
+
         }
     }
 
-    private double calculateSeparationDistance(Ball ball){
-        double distance;
-
+    private void calculateSeparationDistance(Ball ball){
         float a = position.getX()-ball.getPosition().getX();
         float b = velocity.getX();
         float c = position.getY()-ball.getPosition().getY();
         float d = velocity.getY();
         float e = (radius + ball.getRadius()) * (radius + ball.getRadius());
 
-        distance = (Math.sqrt(((d*d)+(b*b))*e-(a*a)*(d*d)+2*a*b*c*d-(b*b)*(c*c))-c*d-a*b)/((d*d)+(b*b));
+        double distance = (Math.sqrt(((d*d)+(b*b))*e-(a*a)*(d*d)+2*a*b*c*d-(b*b)*(c*c))-c*d-a*b)/((d*d)+(b*b));
 
-        return distance;
+        Vector2D add = position.add(new Vector2D((float) distance * velocity.getX(), (float) distance * velocity.getY()));
+        Vector2D sub = ball.position.subtract(new Vector2D((float) distance * ball.getVelocity().getX(), (float) distance * ball.getVelocity().getY()));
+
+        if (position.getDistance(add) < ball.position.getDistance(sub)) {
+            setPosition(add);
+        }
+        else {
+            ball.setPosition(sub);
+        }
     }
 
     public Vector2D getPosition() {

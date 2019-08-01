@@ -21,7 +21,7 @@ public class AppConstants {
     public static float SOCCERBALL_MASS = 6;
     public static float PLAYER_MASS = 10;
 
-    public static float SOCCERBALL_RADIUS = 35;
+    public static float SOCCERBALL_RADIUS = 30;
     public static float PLAYER_RADIUS = 50;
 
     public static float PLAYER_VELOCITY_SPEED = 6;
