@@ -104,6 +104,39 @@ public abstract class Ball implements CollisionHandler {
         //sesti korak je da se opet sastave prethodno izracunate velocity-s i postavljanje tih vrednosti
         velocity = newNormalVelocity1Vector.add(newTangetVelocity1Vector);
         ball.setVelocity(newNormalVelocity2Vector.add(newTangetVelocity2Vector));
+
+        // get the mtd
+        Vector2D delta = (position.subtract(ball.position));
+        float d = delta.getLength();
+        // minimum translation distance to push balls apart after intersecting
+        Vector2D mtdVector = delta.multiply(((getRadius() + ball.getRadius())-d)/d);
+        // impact speed
+        Vector2D v = (this.velocity.subtract(ball.velocity));
+        float vn = v.dot(mtdVector.normalize());
+
+        // sphere intersecting but moving away from each other already
+        if (vn > 0.0f) return;
+
+        double mtd = calculateSeparationDistance(ball);
+        if (mtd > 0){
+            System.out.println("*******************");
+            System.out.println(mtd);
+            position = position.add(new Vector2D((float)mtd*velocity.getX(), (float)mtd*velocity.getY()));
+        }
+    }
+
+    private double calculateSeparationDistance(Ball ball){
+        double distance;
+
+        float a = position.getX()-ball.getPosition().getX();
+        float b = velocity.getX();
+        float c = position.getY()-ball.getPosition().getY();
+        float d = velocity.getY();
+        float e = (radius + ball.getRadius()) * (radius + ball.getRadius());
+
+        distance = (Math.sqrt(((d*d)+(b*b))*e-(a*a)*(d*d)+2*a*b*c*d-(b*b)*(c*c))-c*d-a*b)/((d*d)+(b*b));
+
+        return distance;
     }
 
     public Vector2D getPosition() {

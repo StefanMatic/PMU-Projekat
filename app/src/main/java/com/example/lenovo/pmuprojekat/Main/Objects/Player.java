@@ -26,8 +26,8 @@ public class Player extends Ball {
     public void draw(Canvas canvas) {
         if (selected)
             canvas.drawBitmap(AppConstants.getBitmapBank().getSelected(),
-                    (float) (position.getX() - 1.2 * radius),
-                    (float) (position.getY() - 1.2 * radius),
+                    (float) (position.getX() - 1.5 * radius),
+                    (float) (position.getY() - 1.5 * radius),
                     paint);
 
         super.draw(canvas);

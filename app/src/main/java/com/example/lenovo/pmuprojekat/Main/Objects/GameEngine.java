@@ -37,7 +37,19 @@ public class GameEngine {
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer1Flag()));
-        allObjectsOnField.add(new SoccerBall(new Vector2D(AppConstants.SCREEN_WIDTH * 2 / 3, AppConstants.SCREEN_HEIGHT / 2),
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3*2, AppConstants.SCREEN_HEIGHT / 2),
+                AppConstants.PLAYER_MASS,
+                AppConstants.PLAYER_RADIUS,
+                AppConstants.getBitmapBank().getPlayer2Flag()));
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4*3, AppConstants.SCREEN_HEIGHT / 3),
+                AppConstants.PLAYER_MASS,
+                AppConstants.PLAYER_RADIUS,
+                AppConstants.getBitmapBank().getPlayer2Flag()));
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4*3, AppConstants.SCREEN_HEIGHT / 3 * 2),
+                AppConstants.PLAYER_MASS,
+                AppConstants.PLAYER_RADIUS,
+                AppConstants.getBitmapBank().getPlayer2Flag()));
+        allObjectsOnField.add(new SoccerBall(new Vector2D(AppConstants.SCREEN_WIDTH / 2, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.SOCCERBALL_MASS,
                 AppConstants.SOCCERBALL_RADIUS,
                 AppConstants.getBitmapBank().getBall()));
@@ -128,5 +140,9 @@ public class GameEngine {
 
         touchDown = null;
         selectedPlayer = null;
+    }
+
+    private void resetPlayersOnField(){
+
     }
 }

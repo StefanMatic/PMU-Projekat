@@ -54,8 +54,8 @@ public class BitmapBank {
 
         //Stavljamo da bude malo vece od velicine igraca
         Bitmap resizeSelected = Bitmap.createScaledBitmap(this.selected,
-                (int)(AppConstants.PLAYER_RADIUS*2.4),
-                (int)(AppConstants.PLAYER_RADIUS*2.4),
+                (int)(AppConstants.PLAYER_RADIUS*3),
+                (int)(AppConstants.PLAYER_RADIUS*3),
                 true);
         this.selected = resizeSelected;
     }
