@@ -32,13 +32,17 @@ public class GameThread extends Thread {
                 //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje
                 AppConstants.getGameEngine().draw(canvas);
             }
-            mySurfaceHolder.unlockCanvasAndPost(canvas);
+
+            if (canvas != null)
+                mySurfaceHolder.unlockCanvasAndPost(canvas);
+
 
             try{
                 sleep(THREAD_SLEEP_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
     }
 

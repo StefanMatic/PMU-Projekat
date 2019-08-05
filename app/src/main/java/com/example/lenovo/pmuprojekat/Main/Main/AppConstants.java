@@ -24,7 +24,7 @@ public class AppConstants {
     public static float SOCCERBALL_RADIUS = 30;
     public static float PLAYER_RADIUS = 50;
 
-    public static float PLAYER_VELOCITY_SPEED = 6;
+    public static float PLAYER_VELOCITY_SPEED = 17;
     public static float COMPUTER_VELOCITY_SPEED = 3;
 
     private static BitmapBank bitmapBank;

@@ -37,15 +37,15 @@ public class GameEngine {
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer1Flag()));
-        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3*2, AppConstants.SCREEN_HEIGHT / 2),
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3 * 2, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer2Flag()));
-        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4*3, AppConstants.SCREEN_HEIGHT / 3),
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer2Flag()));
-        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4*3, AppConstants.SCREEN_HEIGHT / 3 * 2),
+        allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3 * 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
                 AppConstants.getBitmapBank().getPlayer2Flag()));
@@ -64,12 +64,36 @@ public class GameEngine {
             for (Ball b : allObjectsOnField) {
                 //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
                 b.updatePosition();
+                updateBallCollision(b);
+                b.applyFriction();
             }
 
-            updateBallCollision();
+
+            /*
+            //updateGoalCollision();
+
+            for (Ball b : allObjectsOnField) {
+                //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
+                b.applyFriction();
+            }
+            */
         }
     }
 
+    private void updateBallCollision(Ball myBall) {
+        synchronized (_sync) {
+            for (Ball b : allObjectsOnField) {
+                if (myBall.isBall(b.getPosition()))
+                    continue;
+
+                if (myBall.checkBallCollision(b)){
+                    myBall.resolveBallCollision(b);
+                }
+            }
+        }
+    }
+
+    /*
     private void updateBallCollision() {
         synchronized (_sync) {
             for (int i = 0; i < allObjectsOnField.size(); i++) {
@@ -81,7 +105,7 @@ public class GameEngine {
             }
         }
     }
-
+    */
 
     //iscrtavanje svih elemenata
     public void draw(Canvas canvas) {
@@ -142,7 +166,26 @@ public class GameEngine {
         selectedPlayer = null;
     }
 
-    private void resetPlayersOnField(){
+    private void resetPlayersOnField() {
+        allObjectsOnField.get(0).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 3, AppConstants.SCREEN_HEIGHT / 2));
+        allObjectsOnField.get(0).setVelocity(new Vector2D(0, 0));
 
+        allObjectsOnField.get(1).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3));
+        allObjectsOnField.get(1).setVelocity(new Vector2D(0, 0));
+
+        allObjectsOnField.get(2).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3 * 2));
+        allObjectsOnField.get(2).setVelocity(new Vector2D(0, 0));
+
+        allObjectsOnField.get(3).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 3 * 2, AppConstants.SCREEN_HEIGHT / 2));
+        allObjectsOnField.get(3).setVelocity(new Vector2D(0, 0));
+
+        allObjectsOnField.get(4).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3));
+        allObjectsOnField.get(4).setVelocity(new Vector2D(0, 0));
+
+        allObjectsOnField.get(5).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3 * 2));
+        allObjectsOnField.get(5).setVelocity(new Vector2D(0, 0));
+
+        allObjectsOnField.get(6).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 2, AppConstants.SCREEN_HEIGHT / 2));
+        allObjectsOnField.get(6).setVelocity(new Vector2D(0, 0));
     }
 }

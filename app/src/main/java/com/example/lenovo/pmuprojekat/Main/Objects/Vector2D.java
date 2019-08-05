@@ -16,6 +16,12 @@ public class Vector2D {
         this.setY(y);
     }
 
+    public Vector2D(Vector2D original)
+    {
+        this.setX(original.getX());
+        this.setY(original.getY());
+    }
+
     public void setX(float x) {
         this.x = x;
     }

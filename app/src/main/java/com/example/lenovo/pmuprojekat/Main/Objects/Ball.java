@@ -22,50 +22,57 @@ public abstract class Ball implements CollisionHandler {
         this.radius = radius;
         this.image = img;
 
-        velocity = new Vector2D(0,0);
+        velocity = new Vector2D(0, 0);
         paint = new Paint();
     }
 
-    public void draw(Canvas canvas){
-        canvas.drawBitmap(image, this.position.getX()-radius,this.position.getY()-radius, paint);
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(image, this.position.getX() - radius, this.position.getY() - radius, paint);
     }
 
-    public void updatePosition(){
+    public void updatePosition() {
         position.setX(position.getX() + velocity.getX());
         position.setY(position.getY() + velocity.getY());
 
         updateWallCollisioin();
-        applyFriction();
+        //Dodavanje trenja radimo tek kasnije iz GameEngine-a
+        //applyFriction();
     }
 
-    private void updateWallCollisioin(){
+    private void resetPositionOnce() {
+        position.setX(position.getX() - velocity.getX());
+        position.setY(position.getY() - velocity.getY());
+    }
+
+
+    private void updateWallCollisioin() {
         //Provera da li udara u levi ili desni zid
-        if(position.getX() - radius < 0 )  {
+        if (position.getX() - radius < 0) {
             position.setX(radius);
             velocity.setX(-velocity.getX());
-        } else if(position.getX() + radius > AppConstants.SCREEN_WIDTH)  {
+        } else if (position.getX() + radius > AppConstants.SCREEN_WIDTH) {
             position.setX(AppConstants.SCREEN_WIDTH - radius);
             velocity.setX(-velocity.getX());
         }
 
         //Provera da li udara gornji ili donji zid
-        if(position.getY() - radius < 0 )  {
+        if (position.getY() - radius < 0) {
             position.setY(radius);
             velocity.setY(-velocity.getY());
-        } else if(position.getY() + radius > AppConstants.SCREEN_HEIGHT)  {
+        } else if (position.getY() + radius > AppConstants.SCREEN_HEIGHT) {
             position.setY(AppConstants.SCREEN_HEIGHT - radius);
             velocity.setY(-velocity.getY());
         }
     }
 
-    private void applyFriction(){
+    public void applyFriction() {
         velocity = velocity.multiply(AppConstants.FRICTION);
     }
 
     @Override
     public boolean checkBallCollision(Ball ball) {
         float distance = position.getDistance(ball.getPosition());
-        if (distance < radius + ball.getRadius())
+        if (distance <= radius + ball.getRadius())
             return true;
 
         return false;
@@ -73,6 +80,8 @@ public abstract class Ball implements CollisionHandler {
 
     @Override
     public void resolveBallCollision(Ball ball) {
+        resetPositionOnce();
+
         //prvi korak je da nademo jedinicne vektore normale i tangente
         Vector2D normalVector = ball.position.subtract(position);
         Vector2D unitNormalVector = normalVector.normalize();
@@ -91,8 +100,8 @@ public abstract class Ball implements CollisionHandler {
         float newTangentialVelocity2 = tangentialVelocity2;
 
         //Cetvrti korak je da se nadu nove vektore noramle
-        float newNormalVelocity1  = (normalVelocity1*(mass - ball.getMass()) + 2*ball.getMass()*normalVelocity2)/(mass + ball.getMass());
-        float newNormalVelocity2  = (normalVelocity2*(ball.getMass() - mass) + 2*mass*normalVelocity1)/(mass + ball.getMass());
+        float newNormalVelocity1 = (normalVelocity1 * (mass - ball.getMass()) + 2 * ball.getMass() * normalVelocity2) / (mass + ball.getMass());
+        float newNormalVelocity2 = (normalVelocity2 * (ball.getMass() - mass) + 2 * mass * normalVelocity1) / (mass + ball.getMass());
 
         //peti korak je da vratimo novopronadene vektore u vektorski oblik
         Vector2D newNormalVelocity1Vector = unitNormalVector.multiply(newNormalVelocity1);
@@ -109,7 +118,7 @@ public abstract class Ball implements CollisionHandler {
         Vector2D delta = (position.subtract(ball.position));
         float d = delta.getLength();
         // minimum translation distance to push balls apart after intersecting
-        Vector2D mtdVector = delta.multiply(((getRadius() + ball.getRadius())-d)/d);
+        Vector2D mtdVector = delta.multiply(((getRadius() + ball.getRadius()) - d) / d);
         // impact speed
         Vector2D v = (this.velocity.subtract(ball.velocity));
         float vn = v.dot(mtdVector.normalize());
@@ -119,28 +128,39 @@ public abstract class Ball implements CollisionHandler {
 
         if (checkBallCollision(ball)) {
             calculateSeparationDistance(ball);
-
         }
     }
 
-    private void calculateSeparationDistance(Ball ball){
-        float a = position.getX()-ball.getPosition().getX();
+    private void calculateSeparationDistance(Ball ball) {
+        float a = position.getX() - ball.getPosition().getX();
         float b = velocity.getX();
-        float c = position.getY()-ball.getPosition().getY();
+        float c = position.getY() - ball.getPosition().getY();
         float d = velocity.getY();
         float e = (radius + ball.getRadius()) * (radius + ball.getRadius());
 
-        double distance = (Math.sqrt(((d*d)+(b*b))*e-(a*a)*(d*d)+2*a*b*c*d-(b*b)*(c*c))-c*d-a*b)/((d*d)+(b*b));
+        double distance = (Math.sqrt(((d * d) + (b * b)) * e - (a * a) * (d * d) + 2 * a * b * c * d - (b * b) * (c * c)) - c * d - a * b) / ((d * d) + (b * b));
 
         Vector2D add = position.add(new Vector2D((float) distance * velocity.getX(), (float) distance * velocity.getY()));
         Vector2D sub = ball.position.subtract(new Vector2D((float) distance * ball.getVelocity().getX(), (float) distance * ball.getVelocity().getY()));
 
-        if (position.getDistance(add) < ball.position.getDistance(sub)) {
-            setPosition(add);
-        }
-        else {
+        if (position.getDistance(add) < ball.position.getDistance(sub) && position.getDistance(add) < getRadius()) {
+           setPosition(add);
+        } else if (ball.position.getDistance(sub) < ball.getRadius()) {
             ball.setPosition(sub);
+        } else {
+            if (position.getDistance(add) < ball.position.getDistance(sub)) {
+                setPosition(add);
+            } else {
+                ball.setPosition(sub);
+            }
         }
+    }
+
+    public boolean isBall(Vector2D ball){
+        if (position.getX() == ball.getX() && position.getY() == ball.getY())
+            return true;
+
+        return false;
     }
 
     public Vector2D getPosition() {
