@@ -110,7 +110,7 @@ public class GameEngine {
         drawBackground(canvas);
         drawPlayers(canvas);
         drawGoals(canvas);
-        goal.draw(canvas);
+       // goal.draw(canvas);
         //drawResult(canvas);
     }
 

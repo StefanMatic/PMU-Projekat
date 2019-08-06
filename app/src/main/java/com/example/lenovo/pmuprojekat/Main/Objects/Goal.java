@@ -15,6 +15,7 @@ public class Goal implements CollisionHandler {
     private float width, height;
     private ArrayList<Goal> goalposts = new ArrayList<>();
     private Ball post;
+    private ArrayList<Vector2D> collisionPoints = new ArrayList<>();
 
     public Goal() {
     }
@@ -22,14 +23,14 @@ public class Goal implements CollisionHandler {
     public Goal(Vector2D start, Vector2D end, float radius) {
         this.start = start;
         this.end = end;
-        this.radius = radius;
+        this.radius = radius / 2;
 
         width = calculateX(48, 800);
         height = radius;
         if (this.start.getX() == 0)
-            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.5), null);
+            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.7), null);
         else
-            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.5), null);
+            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.7), null);
     }
 
     public Vector2D getStart() {
@@ -81,6 +82,10 @@ public class Goal implements CollisionHandler {
         for (Goal gp : goalposts) {
             canvas.drawLine(gp.start.getX(), gp.start.getY(), gp.end.getX(), gp.end.getY(), myPaint);
             canvas.drawCircle(gp.getPost().getPosition().getX(), gp.getPost().getPosition().getY(), gp.getPost().getRadius(), myPaint);
+        }
+        myPaint.setStrokeWidth(5);
+        for (Vector2D point : collisionPoints) {
+            canvas.drawPoint(point.getX(), point.getY(), myPaint);
         }
     }
 
@@ -160,11 +165,11 @@ public class Goal implements CollisionHandler {
     public void resolveBallCollision(Ball ball) {
         for (int i = 0; i < 2; i++) {
             Goal gp = goalposts.get(i);
-            if (checkBallCollision(ball, gp)) {
+            if (checkBallCollision(ball, gp) && checkIfSmallEnoughDistance(ball, gp)) {
+                collisionPoints.add(new Vector2D(ball.getPosition().getX(), ball.getPosition().getY()));
                 ball.resetPositionOnce();
                 if (ball.checkBallCollision(gp.getPost())) {
                     //ball-like collision
-                    //resolveGoalpostCollision(gp.getEnd(), ball);
                     resolveGoalpostCollision(gp.getPost(), ball);
                     break;
                 } else {
@@ -176,12 +181,12 @@ public class Goal implements CollisionHandler {
         }
         for (int i = 2; i < 4; i++) {
             Goal gp = goalposts.get(i);
-            if (checkBallCollision(ball,gp)) {
+            if (checkBallCollision(ball, gp) && checkIfSmallEnoughDistance(ball, gp)) {
+                collisionPoints.add(new Vector2D(ball.getPosition().getX(), ball.getPosition().getY()));
                 ball.resetPositionOnce();
 
                 if (ball.checkBallCollision(gp.getPost())) {
                     //ball-like collision
-                    //resolveGoalpostCollision(gp.getStart(), ball);
                     resolveGoalpostCollision(gp.getPost(), ball);
                 } else {
                     //wall-like collision
@@ -244,6 +249,18 @@ public class Goal implements CollisionHandler {
         projection = projection.multiply((float) t);
         projection = projection.add(s1);
         return projection.getDistance(p);
+    }
+
+    public boolean checkIfSmallEnoughDistance(Ball ball, Goal gp) {
+        if (gp.getStart().getX() == 0) {
+            if (gp.getEnd().getX() >= ball.getPosition().getX() - ball.getRadius())
+                return true;
+        } else {
+            if (gp.getStart().getX() <= ball.getPosition().getX() + ball.getRadius())
+                return true;
+        }
+
+        return false;
     }
 
 }

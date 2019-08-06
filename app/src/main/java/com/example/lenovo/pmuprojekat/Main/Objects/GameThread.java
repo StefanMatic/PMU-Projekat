@@ -11,7 +11,7 @@ import java.lang.Thread;
 //Klasa GameThread predstavlja nit koja iscrtava sve komponente na ekran
 //uz odgovarajuci period spavanja kako bi to izgledalo prirodno
 public class GameThread extends Thread {
-    private static final int THREAD_SLEEP_TIME = 4;
+    private static final int THREAD_SLEEP_TIME = 2;
 
     private SurfaceHolder mySurfaceHolder;
     private boolean isRunning;
@@ -41,7 +41,7 @@ public class GameThread extends Thread {
                 sleep(THREAD_SLEEP_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+           }
 
         }
     }

@@ -11,7 +11,6 @@ import com.example.lenovo.pmuprojekat.Main.Objects.GameEngine;
 public class AppConstants {
     //Mogao bih da dodam i gameStatistics ovde kako bi uvek moglo da se dode do njih
 
-
     //Constants
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
@@ -27,13 +26,13 @@ public class AppConstants {
     public static float PLAYER_VELOCITY_SPEED = 10;
     public static float COMPUTER_VELOCITY_SPEED = 3;
 
-    public static float GOAL_POST_WIDTH=5;
-    public static float GOAL_POST_MASS = 50;
+    public static float GOAL_POST_WIDTH = 7;
+    public static float GOAL_POST_MASS = 200;
 
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;
 
-    public static void initialize(Context context){
+    public static void initialize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -62,17 +61,14 @@ public class AppConstants {
         AppConstants.gameEngine = gameEngine;
     }
 
-    public static void StopThread(Thread thread)
-    {
+    public static void StopThread(Thread thread) {
         boolean retry = true;
-        while (retry)
-        {
-            try
-            {
+        while (retry) {
+            try {
                 thread.join();
                 retry = false;
+            } catch (InterruptedException e) {
             }
-            catch (InterruptedException e) {}
         }
     }
 }
