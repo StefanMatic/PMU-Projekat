@@ -2,14 +2,15 @@ package com.example.lenovo.pmuprojekat.Main.Objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 
 public class Player extends Ball {
     private boolean selected;
 
-    public Player(Vector2D position, float mass, float radius, Bitmap img) {
-        super(position, mass, radius, img);
+    public Player(Vector2D position, float mass, float radius, Bitmap img, Paint paint) {
+        super(position, mass, radius, img, paint);
 
         selected = false;
     }

@@ -16,14 +16,14 @@ public abstract class Ball implements CollisionHandler {
     protected Paint paint;
 
 
-    public Ball(Vector2D position, float mass, float radius, Bitmap img) {
+    public Ball(Vector2D position, float mass, float radius, Bitmap img, Paint paint) {
         this.position = position;
         this.mass = mass;
         this.radius = radius;
         this.image = img;
+        this.paint = paint;
 
         velocity = new Vector2D(0, 0);
-        paint = new Paint();
     }
 
     public void draw(Canvas canvas) {
@@ -201,5 +201,9 @@ public abstract class Ball implements CollisionHandler {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
     }
 }

@@ -34,9 +34,9 @@ public class Goal implements CollisionHandler {
         width = calculateX(48, 800);
         height = radius;
         if (this.start.getX() == 0)
-            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null);
+            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null, new Paint());
         else
-            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null);
+            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null, new Paint());
     }
 
     public Vector2D getStart() {
@@ -269,6 +269,7 @@ public class Goal implements CollisionHandler {
         return false;
     }
 
+    //Provera da li je dat gol na strani player1 - levoj strani
     public boolean checkIfPlayer1Goal(Ball ball){
         if (goalposts.get(FIRST).getStart().getY() <= ball.getPosition().getY() && goalposts.get(SECOND).getStart().getY() >= ball.getPosition().getY()){
             if (goalposts.get(FIRST).getEnd().getX() > ball.getPosition().getX())
@@ -278,6 +279,7 @@ public class Goal implements CollisionHandler {
         return false;
     }
 
+    //Provera da li je dat gol na strani player2 - desnoj strani
     public boolean checkIfPlayer2Goal(Ball ball){
         if (goalposts.get(THIRD).getEnd().getY() <= ball.getPosition().getY() && goalposts.get(FORTH).getEnd().getY() >= ball.getPosition().getY()){
             if (goalposts.get(THIRD).getStart().getX() < ball.getPosition().getX())

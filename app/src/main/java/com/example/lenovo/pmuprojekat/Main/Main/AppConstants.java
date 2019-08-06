@@ -32,6 +32,8 @@ public class AppConstants {
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;
 
+    public static Context myGameContext;
+
     public static void initialize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
@@ -70,5 +72,13 @@ public class AppConstants {
             } catch (InterruptedException e) {
             }
         }
+    }
+
+    public static Context getMyGameContext() {
+        return myGameContext;
+    }
+
+    public static void setMyGameContext(Context myGameContext) {
+        AppConstants.myGameContext = myGameContext;
     }
 }

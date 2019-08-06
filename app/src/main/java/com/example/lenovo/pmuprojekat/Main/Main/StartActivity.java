@@ -30,6 +30,7 @@ public class StartActivity extends Activity {
 
     public void startNewGame(View view) {
         AppConstants.initialize(this);
+        AppConstants.setMyGameContext(this);
 
         Intent intent = new Intent(this, GameActivity.class);
         startActivityForResult(intent,NEW_GAME);

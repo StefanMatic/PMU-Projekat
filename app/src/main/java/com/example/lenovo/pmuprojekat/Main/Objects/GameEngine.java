@@ -4,12 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 
 import java.util.ArrayList;
 
 public class GameEngine {
     private final int SOCCERBALL_INDEX = 6;
+    private final int TRANSPARENT_PAINT = 150;
+    private final int OPAQUE_PAINT = 255;
 
     private Vector2D touchDown;
     private Player selectedPlayer;
@@ -18,12 +21,21 @@ public class GameEngine {
 
     private ArrayList<Ball> allObjectsOnField = null;
     private Goal goal;
+    private GameStatus gameStats;
+    private Paint transparentPaint, opaquePaint;
+
 
     public GameEngine() {
-        initFiledAndPlayers();
-
         touchDown = null;
         selectedPlayer = null;
+
+        transparentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        transparentPaint.setAlpha(TRANSPARENT_PAINT);
+
+        opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        opaquePaint.setAlpha(OPAQUE_PAINT);
+
+        initFiledAndPlayers();
     }
 
     public void initFiledAndPlayers() {
@@ -34,31 +46,44 @@ public class GameEngine {
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer1Flag()));
+                AppConstants.getBitmapBank().getPlayer1Flag(),
+                opaquePaint));
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer1Flag()));
+                AppConstants.getBitmapBank().getPlayer1Flag(),
+                opaquePaint));
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4, AppConstants.SCREEN_HEIGHT / 3 * 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer1Flag()));
+                AppConstants.getBitmapBank().getPlayer1Flag(),
+                opaquePaint));
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3 * 2, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer2Flag()));
+                AppConstants.getBitmapBank().getPlayer2Flag(),
+                transparentPaint));
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer2Flag()));
+                AppConstants.getBitmapBank().getPlayer2Flag(),
+                transparentPaint));
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 4 * 3, AppConstants.SCREEN_HEIGHT / 3 * 2),
                 AppConstants.PLAYER_MASS,
                 AppConstants.PLAYER_RADIUS,
-                AppConstants.getBitmapBank().getPlayer2Flag()));
+                AppConstants.getBitmapBank().getPlayer2Flag(),
+                transparentPaint));
         allObjectsOnField.add(new SoccerBall(new Vector2D(AppConstants.SCREEN_WIDTH / 2, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.SOCCERBALL_MASS,
                 AppConstants.SOCCERBALL_RADIUS,
-                AppConstants.getBitmapBank().getBall()));
+                AppConstants.getBitmapBank().getBall(),
+                opaquePaint));
+
+        gameStats = new GameStatus("Stefan",
+                "Sofija",
+                AppConstants.getBitmapBank().getFiled(),
+                AppConstants.getBitmapBank().getPlayer1Flag(),
+                AppConstants.getBitmapBank().getPlayer2Flag());
     }
 
     public void update() {
@@ -71,18 +96,22 @@ public class GameEngine {
                 b.updatePosition();
                 updateBallCollision(b);
                 goal.resolveBallCollision(b);
-                if (goal.checkBallCollision(b)){
+                if (goal.checkBallCollision(b)) {
                     //goal.checkBallCollision(b);
                     resetPlayersOnField();
                 }
                 b.applyFriction();
             }
 
-            if (goal.checkIfPlayer1Goal(allObjectsOnField.get(SOCCERBALL_INDEX)))
+            if (goal.checkIfPlayer1Goal(allObjectsOnField.get(SOCCERBALL_INDEX))) {
+                gameStats.player1Goal();
                 resetPlayersOnField();
+            }
 
-            if (goal.checkIfPlayer2Goal(allObjectsOnField.get(SOCCERBALL_INDEX)))
+            if (goal.checkIfPlayer2Goal(allObjectsOnField.get(SOCCERBALL_INDEX))) {
+                gameStats.player2Goal();
                 resetPlayersOnField();
+            }
         }
     }
 
@@ -92,34 +121,19 @@ public class GameEngine {
                 if (myBall.isBall(b.getPosition()))
                     continue;
 
-                if (myBall.checkBallCollision(b)){
+                if (myBall.checkBallCollision(b)) {
                     myBall.resolveBallCollision(b);
                 }
             }
         }
     }
 
-    /*
-    private void updateBallCollision() {
-        synchronized (_sync) {
-            for (int i = 0; i < allObjectsOnField.size(); i++) {
-                for (int j = i + 1; j < allObjectsOnField.size(); j++) {
-                    if (allObjectsOnField.get(i).checkBallCollision(allObjectsOnField.get(j))){
-                        allObjectsOnField.get(i).resolveBallCollision(allObjectsOnField.get(j));
-                    }
-                }
-            }
-        }
-    }
-    */
-
     //iscrtavanje svih elemenata
     public void draw(Canvas canvas) {
         drawBackground(canvas);
         drawPlayers(canvas);
         drawGoals(canvas);
-       // goal.draw(canvas);
-        //drawResult(canvas);
+        gameStats.draw(canvas);
     }
 
     //ide se redom i iscrtava se svaki objekat koji se nalazi na terenu
@@ -143,16 +157,22 @@ public class GameEngine {
 
     //Proverava da li si na zadatim kordinatama nalazi neki disk
     public void checkIfSelected(float x, float y) {
+        int i = 0;
+
         for (Ball ball : allObjectsOnField) {
             if (ball instanceof Player) {
                 if (((Player) ball).checkIfSelected(x, y)) {
-                    ((Player) ball).setSelected(true);
-                    selectedPlayer = (Player) ball;
+                    //provera da li je igrac koji je na redu za igru izabran
+                    if ((gameStats.isPlayer1Turn() && i < 3) || (gameStats.isPlayer2Turn() && i > 2)) {
+                        ((Player) ball).setSelected(true);
+                        selectedPlayer = (Player) ball;
 
-                    touchDown = new Vector2D(x, y);
-                    break;
+                        touchDown = new Vector2D(x, y);
+                        break;
+                    }
                 }
             }
+            i++;
         }
     }
 
@@ -163,6 +183,7 @@ public class GameEngine {
             Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
             Vector2D newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
             selectedPlayer.setVelocity(newVelocity);
+            changePlayerTurns();
         }
 
         //resetovanje
@@ -177,6 +198,34 @@ public class GameEngine {
         selectedPlayer = null;
     }
 
+    private void changePlayerTurns() {
+        Paint transparentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        transparentPaint.setAlpha(TRANSPARENT_PAINT);
+
+        Paint opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        opaquePaint.setAlpha(OPAQUE_PAINT);
+
+        gameStats.nextPlayerTurn();
+
+        for (int i = 0; i < 3; i++) {
+            if (gameStats.isPlayer1Turn()) {
+                allObjectsOnField.get(i).setPaint(opaquePaint);
+            }else {
+                allObjectsOnField.get(i).setPaint(transparentPaint);
+            }
+        }
+        for (int i = 3; i < allObjectsOnField.size() - 1; i++) {
+            if (gameStats.isPlayer2Turn()) {
+                allObjectsOnField.get(i).setPaint(opaquePaint);
+            }else {
+                allObjectsOnField.get(i).setPaint(transparentPaint);
+            }
+        }
+
+
+    }
+
+    //Postavljanje igraca u prvobitan raspored
     private void resetPlayersOnField() {
         allObjectsOnField.get(0).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 3, AppConstants.SCREEN_HEIGHT / 2));
         allObjectsOnField.get(0).setVelocity(new Vector2D(0, 0));
