@@ -15,7 +15,7 @@ public class AppConstants {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
-    public static final float FRICTION = 0.95f;
+    public static final float FRICTION = 0.98f;
 
     public static float SOCCERBALL_MASS = 6;
     public static float PLAYER_MASS = 10;

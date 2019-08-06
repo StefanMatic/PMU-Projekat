@@ -9,6 +9,8 @@ import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import java.util.ArrayList;
 
 public class GameEngine {
+    private final int SOCCERBALL_INDEX = 6;
+
     private Vector2D touchDown;
     private Player selectedPlayer;
 
@@ -75,6 +77,12 @@ public class GameEngine {
                 }
                 b.applyFriction();
             }
+
+            if (goal.checkIfPlayer1Goal(allObjectsOnField.get(SOCCERBALL_INDEX)))
+                resetPlayersOnField();
+
+            if (goal.checkIfPlayer2Goal(allObjectsOnField.get(SOCCERBALL_INDEX)))
+                resetPlayersOnField();
         }
     }
 

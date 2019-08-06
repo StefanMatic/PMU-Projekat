@@ -10,6 +10,12 @@ import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import java.util.ArrayList;
 
 public class Goal implements CollisionHandler {
+    public final int FIRST = 0;
+    public final int SECOND = 1;
+    public final int THIRD = 2;
+    public final int FORTH = 3;
+
+
     private Vector2D start, end;
     private float radius;
     private float width, height;
@@ -28,9 +34,9 @@ public class Goal implements CollisionHandler {
         width = calculateX(48, 800);
         height = radius;
         if (this.start.getX() == 0)
-            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.7), null);
+            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null);
         else
-            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.7), null);
+            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null);
     }
 
     public Vector2D getStart() {
@@ -262,5 +268,26 @@ public class Goal implements CollisionHandler {
 
         return false;
     }
+
+    public boolean checkIfPlayer1Goal(Ball ball){
+        if (goalposts.get(FIRST).getStart().getY() <= ball.getPosition().getY() && goalposts.get(SECOND).getStart().getY() >= ball.getPosition().getY()){
+            if (goalposts.get(FIRST).getEnd().getX() > ball.getPosition().getX())
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean checkIfPlayer2Goal(Ball ball){
+        if (goalposts.get(THIRD).getEnd().getY() <= ball.getPosition().getY() && goalposts.get(FORTH).getEnd().getY() >= ball.getPosition().getY()){
+            if (goalposts.get(THIRD).getStart().getX() < ball.getPosition().getX())
+                return true;
+        }
+
+        return false;
+    }
+
+
+
 
 }
