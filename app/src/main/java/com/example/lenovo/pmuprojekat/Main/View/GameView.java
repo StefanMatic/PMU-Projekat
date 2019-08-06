@@ -20,12 +20,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
+        setFocusable(true);
+
 
         //Napravi thread
         gameThread = new GameThread(surfaceHolder);
         gameThread.setRunning(true);
-        setFocusable(true);
-
     }
 
     @Override

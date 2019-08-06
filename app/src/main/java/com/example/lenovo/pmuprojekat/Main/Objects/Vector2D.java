@@ -62,6 +62,11 @@ public class Vector2D {
         return (float) Math.sqrt((v2.getX() - getX()) * (v2.getX() - getX()) + (v2.getY() - getY()) * (v2.getY() - getY()));
     }
 
+    public double getDistance(double vx, double vy) {
+        vx -= x;
+        vy -= y;
+        return Math.sqrt(vx * vx + vy * vy);
+    }
 
     public Vector2D add(Vector2D v2)
     {
@@ -77,6 +82,18 @@ public class Vector2D {
         result.setX(this.getX() - v2.getX());
         result.setY(this.getY() - v2.getY());
         return result;
+    }
+
+    public static Vector2D add(Vector2D v1, Vector2D v2) {
+        return new Vector2D(v1.x + v2.x, v1.y + v2.y);
+    }
+
+    public static Vector2D subtract(Vector2D v1, Vector2D v2) {
+        return new Vector2D(v1.x - v2.x, v1.y - v2.y);
+    }
+
+    public static double dot(Vector2D v1, Vector2D v2) {
+        return v1.x * v2.x + v1.y * v2.y;
     }
 
     public Vector2D multiply(float scaleFactor)

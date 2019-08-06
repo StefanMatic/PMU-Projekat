@@ -39,7 +39,7 @@ public abstract class Ball implements CollisionHandler {
         //applyFriction();
     }
 
-    private void resetPositionOnce() {
+    public void resetPositionOnce() {
         position.setX(position.getX() - velocity.getX());
         position.setY(position.getY() - velocity.getY());
     }

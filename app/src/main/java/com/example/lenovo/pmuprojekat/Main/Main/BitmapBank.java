@@ -10,7 +10,8 @@ import com.example.lenovo.pmuprojekat.R;
 //Moze da se iskoristi kako bi se zapamtilo trenutno stanje igre
 public class BitmapBank {
     private Bitmap player1Flag, player2Flag;
-    private Bitmap filed;
+    private Bitmap field;
+    private Bitmap goal;
     private Bitmap ball;
     private Bitmap selected;
 
@@ -19,7 +20,8 @@ public class BitmapBank {
     public BitmapBank(Resources res) {
         this.player1Flag = BitmapFactory.decodeResource(res, R.drawable.flag0);
         this.player2Flag = BitmapFactory.decodeResource(res, R.drawable.flag1);
-        this.filed = BitmapFactory.decodeResource(res, R.drawable.field0);
+        this.field = BitmapFactory.decodeResource(res, R.drawable.field0);
+        this.goal = BitmapFactory.decodeResource(res, R.drawable.goal);
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected  =BitmapFactory.decodeResource(res, R.drawable.selected);
 
@@ -40,11 +42,17 @@ public class BitmapBank {
                 true);
         this.player2Flag = resizePlayer2;
 
-        Bitmap resizeField = Bitmap.createScaledBitmap(this.filed,
+        Bitmap resizeField = Bitmap.createScaledBitmap(this.field,
                 AppConstants.SCREEN_WIDTH,
                 AppConstants.SCREEN_HEIGHT,
                 true);
-        this.filed = resizeField;
+        this.field = resizeField;
+
+        Bitmap resizeGoal = Bitmap.createScaledBitmap(this.goal,
+                AppConstants.SCREEN_WIDTH,
+                AppConstants.SCREEN_HEIGHT,
+                true);
+        this.goal = resizeGoal;
 
         Bitmap resizeBall = Bitmap.createScaledBitmap(this.ball,
                 (int)(AppConstants.SOCCERBALL_RADIUS*2),
@@ -61,10 +69,10 @@ public class BitmapBank {
     }
 
     //Moze da se ubace sve slike osim slike lopte i selektovanog igraca
-    public BitmapBank(Resources res, Bitmap player1Flag, Bitmap player2Flag, Bitmap filed) {
+    public BitmapBank(Resources res, Bitmap player1Flag, Bitmap player2Flag, Bitmap field) {
         this.player1Flag = player1Flag;
         this.player2Flag = player2Flag;
-        this.filed = filed;
+        this.field = field;
 
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
@@ -91,11 +99,11 @@ public class BitmapBank {
     }
 
     public Bitmap getFiled() {
-        return filed;
+        return field;
     }
 
     public void setFiled(Bitmap filed) {
-        this.filed = filed;
+        this.field = filed;
         resizeImages();
     }
 
@@ -105,5 +113,9 @@ public class BitmapBank {
 
     public Bitmap getSelected() {
         return selected;
+    }
+
+    public Bitmap getGoal() {
+        return goal;
     }
 }

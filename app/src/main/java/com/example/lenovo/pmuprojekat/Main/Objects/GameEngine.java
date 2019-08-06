@@ -15,6 +15,7 @@ public class GameEngine {
     static final Object _sync = new Object();
 
     private ArrayList<Ball> allObjectsOnField = null;
+    private Goal goal;
 
     public GameEngine() {
         initFiledAndPlayers();
@@ -24,6 +25,9 @@ public class GameEngine {
     }
 
     public void initFiledAndPlayers() {
+        goal = new Goal();
+        goal.setGoalposts();
+
         allObjectsOnField = new ArrayList<>();
         allObjectsOnField.add(new Player(new Vector2D(AppConstants.SCREEN_WIDTH / 3, AppConstants.SCREEN_HEIGHT / 2),
                 AppConstants.PLAYER_MASS,
@@ -62,21 +66,15 @@ public class GameEngine {
     private void updateAllObjects() {
         synchronized (_sync) {
             for (Ball b : allObjectsOnField) {
-                //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
                 b.updatePosition();
                 updateBallCollision(b);
+                goal.resolveBallCollision(b);
+                if (goal.checkBallCollision(b)){
+                    //goal.checkBallCollision(b);
+                    resetPlayersOnField();
+                }
                 b.applyFriction();
             }
-
-
-            /*
-            //updateGoalCollision();
-
-            for (Ball b : allObjectsOnField) {
-                //Prilikom postavljanja novih koordinata lopta, proverava se i da li se udara u zid
-                b.applyFriction();
-            }
-            */
         }
     }
 
@@ -111,8 +109,8 @@ public class GameEngine {
     public void draw(Canvas canvas) {
         drawBackground(canvas);
         drawPlayers(canvas);
-
-        //drawGoals(canvas);
+        drawGoals(canvas);
+        goal.draw(canvas);
         //drawResult(canvas);
     }
 
@@ -128,6 +126,11 @@ public class GameEngine {
     //iscrtava se pozadina terena
     private void drawBackground(Canvas canvas) {
         canvas.drawBitmap(AppConstants.getBitmapBank().getFiled(), 0, 0, new Paint());
+    }
+
+    //iscrtavaju se golovi
+    private void drawGoals(Canvas canvas) {
+        canvas.drawBitmap(AppConstants.getBitmapBank().getGoal(), 0, 0, new Paint());
     }
 
     //Proverava da li si na zadatim kordinatama nalazi neki disk
