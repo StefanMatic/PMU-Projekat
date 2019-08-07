@@ -1,20 +1,14 @@
-package com.example.lenovo.pmuprojekat.Main.Main;
+package com.example.lenovo.pmuprojekat.Main.View;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.lenovo.pmuprojekat.Main.View.GameActivity;
-import com.example.lenovo.pmuprojekat.Main.View.NewGameActivity;
 import com.example.lenovo.pmuprojekat.R;
 
-public class StartActivity extends Activity {
-    public static final int NEW_GAME = 1;
+public class NewGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +20,6 @@ public class StartActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        setContentView(R.layout.activity_start);
-    }
-
-    public void startNewGame(View view) {
-        AppConstants.initialize(this);
-
-        Intent intent = new Intent(this, NewGameActivity.class);
-        startActivity(intent);
+        setContentView(R.layout.activity_new_game);
     }
 }
