@@ -34,9 +34,9 @@ public class Goal implements CollisionHandler {
         width = calculateX(48, 800);
         height = radius;
         if (this.start.getX() == 0)
-            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null, new Paint());
+            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.2), null, new Paint());
         else
-            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.0), null, new Paint());
+            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.2), null, new Paint());
     }
 
     public Vector2D getStart() {

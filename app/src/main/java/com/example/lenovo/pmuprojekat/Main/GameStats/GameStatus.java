@@ -1,6 +1,7 @@
 package com.example.lenovo.pmuprojekat.Main.GameStats;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -44,16 +45,10 @@ public class GameStatus {
         timeStart = System.currentTimeMillis();
         timeElapsed = timeStart;
 
-
-//        Typeface bold = Typeface.create(AppConstants.getMyGameContext().getResources().getFont(R.font.game),
-//                Typeface.BOLD);
-
         myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         myPaint.setColor(Color.WHITE);
         myPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         myPaint.setTextSize(50);
-//        myPaint.setTypeface(bold);
-
     }
 
     public boolean isPlayer1Turn() {
@@ -109,7 +104,7 @@ public class GameStatus {
     public void draw(Canvas canvas) {
         String score = player1Score + " - " + player2Score;
         canvas.drawText(score, AppConstants.SCREEN_WIDTH / 8 * 3, AppConstants.SCREEN_HEIGHT / 10, myPaint);
-        canvas.drawText(currentTimeAsString(), AppConstants.SCREEN_WIDTH / 4 * 2 + 10, AppConstants.SCREEN_HEIGHT / 10, myPaint);
+        canvas.drawText(currentTimeAsString(), AppConstants.SCREEN_WIDTH / 8 * 5, AppConstants.SCREEN_HEIGHT / 10, myPaint);
         canvas.drawText(player1, AppConstants.SCREEN_WIDTH / 10, AppConstants.SCREEN_HEIGHT / 10, myPaint);
         canvas.drawText(player2, AppConstants.SCREEN_WIDTH / 10 * 8, AppConstants.SCREEN_HEIGHT / 10, myPaint);
     }
@@ -143,7 +138,24 @@ public class GameStatus {
     public String currentTimeAsString() {
         double currentTime = System.currentTimeMillis() - timeStart;
         String time;
-        time = (int)(currentTime/1000) + " : " + (int)currentTime%1000;
+        int min = (int) (currentTime / 1000 / 60);
+        int sec = (int) (currentTime / 1000 % 60);
+
+        //formatiranje
+        String minString;
+        String secString;
+
+        if (min < 10)
+            minString = "0" + min;
+        else
+            minString = min + "";
+
+        if (sec < 10)
+            secString = "0" + sec;
+        else
+            secString = sec + "";
+
+        time = minString + " : " + secString;
 
         return time;
     }

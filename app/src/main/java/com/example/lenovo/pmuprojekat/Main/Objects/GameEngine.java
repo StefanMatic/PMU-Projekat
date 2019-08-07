@@ -1,9 +1,11 @@
 package com.example.lenovo.pmuprojekat.Main.Objects;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.example.lenovo.pmuprojekat.Main.GameAudio.GameAudioPlayer;
 import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 
@@ -11,8 +13,11 @@ import java.util.ArrayList;
 
 public class GameEngine {
     private final int SOCCERBALL_INDEX = 6;
-    private final int TRANSPARENT_PAINT = 150;
+    private final int TRANSPARENT_PAINT = 170;
     private final int OPAQUE_PAINT = 255;
+
+    private final int MAX_TURN_TIME = 5000;
+    private final int MIN_TURN_TIME = 1000;
 
     private Vector2D touchDown;
     private Player selectedPlayer;
@@ -21,11 +26,12 @@ public class GameEngine {
 
     private ArrayList<Ball> allObjectsOnField = null;
     private Goal goal;
+    private GameAudioPlayer gameAudioPlayer;
     private GameStatus gameStats;
     private Paint transparentPaint, opaquePaint;
 
 
-    public GameEngine() {
+    public GameEngine(Context context) {
         touchDown = null;
         selectedPlayer = null;
 
@@ -35,10 +41,11 @@ public class GameEngine {
         opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         opaquePaint.setAlpha(OPAQUE_PAINT);
 
-        initFiledAndPlayers();
+        initFiledAndPlayers(context);
     }
 
-    public void initFiledAndPlayers() {
+    //inicijacija svih lopta na terenu i pocetak vodenje statistike igre
+    public void initFiledAndPlayers(Context context) {
         goal = new Goal();
         goal.setGoalposts();
 
@@ -84,32 +91,42 @@ public class GameEngine {
                 AppConstants.getBitmapBank().getFiled(),
                 AppConstants.getBitmapBank().getPlayer1Flag(),
                 AppConstants.getBitmapBank().getPlayer2Flag());
+
+        gameAudioPlayer = new GameAudioPlayer(context);
     }
 
     public void update() {
         updateAllObjects();
+        if (checkPlayerTimeLimit()) {
+            gameAudioPlayer.playSound(AppConstants.getBEEP());
+            changePlayerTurns();
+        }
     }
 
+    private boolean checkPlayerTimeLimit(){
+        if (System.currentTimeMillis() - gameStats.getTimeElapsed() >= MAX_TURN_TIME)
+            return true;
+
+        return false;
+    }
     private void updateAllObjects() {
         synchronized (_sync) {
             for (Ball b : allObjectsOnField) {
                 b.updatePosition();
                 updateBallCollision(b);
                 goal.resolveBallCollision(b);
-                if (goal.checkBallCollision(b)) {
-                    //goal.checkBallCollision(b);
-                    resetPlayersOnField();
-                }
                 b.applyFriction();
             }
 
             if (goal.checkIfPlayer1Goal(allObjectsOnField.get(SOCCERBALL_INDEX))) {
                 gameStats.player1Goal();
+                gameAudioPlayer.playSound(AppConstants.getCROWD());
                 resetPlayersOnField();
             }
 
             if (goal.checkIfPlayer2Goal(allObjectsOnField.get(SOCCERBALL_INDEX))) {
                 gameStats.player2Goal();
+                gameAudioPlayer.playSound(AppConstants.getCROWD());
                 resetPlayersOnField();
             }
         }
@@ -122,6 +139,7 @@ public class GameEngine {
                     continue;
 
                 if (myBall.checkBallCollision(b)) {
+                    gameAudioPlayer.playSound(AppConstants.getCOLLISION());
                     myBall.resolveBallCollision(b);
                 }
             }
@@ -222,7 +240,7 @@ public class GameEngine {
             }
         }
 
-
+        gameStats.setTimeElapsed(System.currentTimeMillis());
     }
 
     //Postavljanje igraca u prvobitan raspored

@@ -17,17 +17,21 @@ public class AppConstants {
 
     public static final float FRICTION = 0.98f;
 
-    public static float SOCCERBALL_MASS = 6;
-    public static float PLAYER_MASS = 10;
+    public static final float SOCCERBALL_MASS = 6;
+    public static final float PLAYER_MASS = 10;
 
-    public static float SOCCERBALL_RADIUS = 30;
-    public static float PLAYER_RADIUS = 50;
+    public static final float SOCCERBALL_RADIUS = 30;
+    public static final float PLAYER_RADIUS = 50;
 
-    public static float PLAYER_VELOCITY_SPEED = 10;
-    public static float COMPUTER_VELOCITY_SPEED = 3;
+    public static final float PLAYER_VELOCITY_SPEED = 10;
+    public static final float COMPUTER_VELOCITY_SPEED = 3;
 
-    public static float GOAL_POST_WIDTH = 7;
-    public static float GOAL_POST_MASS = 200;
+    public static final float GOAL_POST_WIDTH = 7;
+    public static final float GOAL_POST_MASS = 200;
+
+    public static final int CROWD_SOUND  = 1;
+    public static final int COLLISION_SOUND = 2;
+    public static final int BEEP_SOUND = 3;
 
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;
@@ -44,7 +48,9 @@ public class AppConstants {
         SCREEN_WIDTH = displayMetrics.widthPixels;
 
         bitmapBank = new BitmapBank(context.getResources());
-        gameEngine = new GameEngine();
+        gameEngine = new GameEngine(context);
+
+        myGameContext = context;
     }
 
     public static BitmapBank getBitmapBank() {
@@ -80,5 +86,17 @@ public class AppConstants {
 
     public static void setMyGameContext(Context myGameContext) {
         AppConstants.myGameContext = myGameContext;
+    }
+
+    public static int getCROWD() {
+        return CROWD_SOUND;
+    }
+
+    public static int getCOLLISION() {
+        return COLLISION_SOUND;
+    }
+
+    public static int getBEEP(){
+        return BEEP_SOUND;
     }
 }
