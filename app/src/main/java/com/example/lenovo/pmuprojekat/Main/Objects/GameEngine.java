@@ -97,7 +97,7 @@ public class GameEngine {
         }
     }
 
-    private boolean checkPlayerTimeLimit(){
+    private boolean checkPlayerTimeLimit() {
         if (System.currentTimeMillis() - gameStats.getTimeElapsed() >= MAX_TURN_TIME)
             return true;
 
@@ -204,6 +204,45 @@ public class GameEngine {
         resetForNextTurn();
     }
 
+    private void makeComputerMove() {
+        Ball soccerBall = allObjectsOnField.get(allObjectsOnField.size() - 1);
+        Ball closestBall = null;
+
+        //Ne moze da bude vece distanca od sirine ekrana, pa to uzimamo kao pocetku vrednost
+        float minDistance = AppConstants.SCREEN_WIDTH;
+
+        if (gameStats.isPlayer1Turn()) {
+            for (int i = 0; i < 3; i++) {
+                float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
+                if (minDistance > dis){
+                    minDistance = dis;
+                    closestBall = allObjectsOnField.get(i);
+                }
+            }
+        }
+        else {
+            for (int i = 3; i < allObjectsOnField.size()-1; i++) {
+                float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
+                if (minDistance > dis){
+                    minDistance = dis;
+                    closestBall = allObjectsOnField.get(i);
+                }
+            }
+        }
+
+        if (closestBall != null){
+            selectedPlayer = (Player) closestBall;
+        }
+
+        try {
+            Thread.sleep((long) (Math.random() * 4000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        makeMove(soccerBall.getPosition().getX(), soccerBall.getPosition().getY());
+    }
+
     private void resetForNextTurn() {
         if (selectedPlayer != null)
             selectedPlayer.setSelected(false);
@@ -212,6 +251,7 @@ public class GameEngine {
         selectedPlayer = null;
     }
 
+    //Menjamo koji igrac je sada na redu da igra uz vizuelne promene na ekranu
     private void changePlayerTurns() {
         Paint transparentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         transparentPaint.setAlpha(TRANSPARENT_PAINT);
@@ -224,19 +264,21 @@ public class GameEngine {
         for (int i = 0; i < 3; i++) {
             if (gameStats.isPlayer1Turn()) {
                 allObjectsOnField.get(i).setPaint(opaquePaint);
-            }else {
+            } else {
                 allObjectsOnField.get(i).setPaint(transparentPaint);
             }
         }
         for (int i = 3; i < allObjectsOnField.size() - 1; i++) {
             if (gameStats.isPlayer2Turn()) {
                 allObjectsOnField.get(i).setPaint(opaquePaint);
-            }else {
+            } else {
                 allObjectsOnField.get(i).setPaint(transparentPaint);
             }
         }
 
         gameStats.setTimeElapsed(System.currentTimeMillis());
+        if (gameStats.isCurrentPlayerTurnComputer())
+            makeComputerMove();
     }
 
     //Postavljanje igraca u prvobitan raspored

@@ -25,6 +25,7 @@ public class GameStatus {
     private double timeStart;
     private double timeElapsed;
     private Paint myPaint;
+    private boolean currentPlayerTurnComputer;
 
     @SuppressLint("NewApi")
     public GameStatus(String player1, String player2, Bitmap fieldImage, Bitmap player1Flag, Bitmap player2Flag, boolean player1Computer, boolean player2Computer) {
@@ -98,9 +99,13 @@ public class GameStatus {
         if (player1Turn) {
             player1Turn = false;
             player2Turn = true;
+
+            currentPlayerTurnComputer = player2Computer;
         } else {
             player2Turn = false;
             player1Turn = true;
+
+            currentPlayerTurnComputer = player1Computer;
         }
     }
 
@@ -169,5 +174,9 @@ public class GameStatus {
         time = minString + " : " + secString;
 
         return time;
+    }
+
+    public boolean isCurrentPlayerTurnComputer() {
+        return currentPlayerTurnComputer;
     }
 }
