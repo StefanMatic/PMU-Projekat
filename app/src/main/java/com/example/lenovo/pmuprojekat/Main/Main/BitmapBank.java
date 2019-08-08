@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 
 import com.example.lenovo.pmuprojekat.R;
 
+import java.util.HashMap;
+
 //Klasa koja omogucava da sve slike od trenutne igre budu na jednom mestu.
 //Moze da se iskoristi kako bi se zapamtilo trenutno stanje igre
 public class BitmapBank {
@@ -14,6 +16,9 @@ public class BitmapBank {
     private Bitmap goal;
     private Bitmap ball;
     private Bitmap selected;
+    private Bitmap[] arrows;
+
+    private HashMap<Integer, Bitmap> allFlags;
 
     //ovaj konstruktor postavlja sve podrazumevane parametre
     //moze da se koristi nakon sto se radi reset trenutnog stanja igre
@@ -24,8 +29,22 @@ public class BitmapBank {
         this.goal = BitmapFactory.decodeResource(res, R.drawable.goal);
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected  =BitmapFactory.decodeResource(res, R.drawable.selected);
+        this.arrows = new Bitmap[2];
 
+        this.arrows[0] = BitmapFactory.decodeResource(res, R.drawable.arrow_left);
+        this.arrows[1] = BitmapFactory.decodeResource(res, R.drawable.arrow_right);
+
+        initAllFlags(res);
         resizeImages();
+    }
+
+    private void initAllFlags(Resources res){
+        allFlags = new HashMap<>();
+        allFlags.put(0,BitmapFactory.decodeResource(res, R.drawable.flag0));
+        allFlags.put(1,BitmapFactory.decodeResource(res, R.drawable.flag1));
+        allFlags.put(2,BitmapFactory.decodeResource(res, R.drawable.flag2));
+        allFlags.put(3,BitmapFactory.decodeResource(res, R.drawable.flag3));
+        allFlags.put(4,BitmapFactory.decodeResource(res, R.drawable.flag4));
     }
 
     //Slike se postavljaju u proporcije koje ce biti koriscene u igri
@@ -66,6 +85,9 @@ public class BitmapBank {
                 (int)(AppConstants.PLAYER_RADIUS*3),
                 true);
         this.selected = resizeSelected;
+
+        this.arrows[0] = resizePicture(this.arrows[0], AppConstants.SCREEN_WIDTH/14, AppConstants.SCREEN_HEIGHT/10);
+        this.arrows[1] = resizePicture(this.arrows[1], AppConstants.SCREEN_WIDTH/14, AppConstants.SCREEN_HEIGHT/10);
     }
 
     //Moze da se ubace sve slike osim slike lopte i selektovanog igraca
@@ -78,6 +100,11 @@ public class BitmapBank {
         this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
 
         resizeImages();
+    }
+
+    public Bitmap resizePicture(Bitmap original, int width, int height){
+        Bitmap resizePicture = Bitmap.createScaledBitmap(original,width,height, true);
+        return resizePicture;
     }
 
     public Bitmap getPlayer1Flag() {
@@ -117,5 +144,17 @@ public class BitmapBank {
 
     public Bitmap getGoal() {
         return goal;
+    }
+
+    public Bitmap getFlag(int i){
+        return allFlags.get(i);
+    }
+
+    public int getNumberOfFlags(){
+        return allFlags.size();
+    }
+
+    public Bitmap[] getArrows() {
+        return arrows;
     }
 }

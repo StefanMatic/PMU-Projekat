@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class GameStatus {
     private String player1, player2;
+    private boolean player1Computer, player2Computer;
     private boolean player1Turn, player2Turn;
     private int player1Score, player2Score;
     private ArrayList<Ball> allBalls;
@@ -26,12 +27,14 @@ public class GameStatus {
     private Paint myPaint;
 
     @SuppressLint("NewApi")
-    public GameStatus(String player1, String player2, Bitmap fieldImage, Bitmap player1Flag, Bitmap player2Flag) {
+    public GameStatus(String player1, String player2, Bitmap fieldImage, Bitmap player1Flag, Bitmap player2Flag, boolean player1Computer, boolean player2Computer) {
         this.player1 = player1;
         this.player2 = player2;
         this.fieldImage = fieldImage;
         this.player1Flag = player1Flag;
         this.player2Flag = player2Flag;
+        this.player1Computer = player1Computer;
+        this.player2Computer = player2Computer;
 
         player1Turn = true;
         player2Turn = false;
@@ -107,6 +110,14 @@ public class GameStatus {
         canvas.drawText(currentTimeAsString(), AppConstants.SCREEN_WIDTH / 8 * 5, AppConstants.SCREEN_HEIGHT / 10, myPaint);
         canvas.drawText(player1, AppConstants.SCREEN_WIDTH / 10, AppConstants.SCREEN_HEIGHT / 10, myPaint);
         canvas.drawText(player2, AppConstants.SCREEN_WIDTH / 10 * 8, AppConstants.SCREEN_HEIGHT / 10, myPaint);
+    }
+
+    public boolean isPlayer1Computer() {
+        return player1Computer;
+    }
+
+    public boolean isPlayer2Computer() {
+        return player2Computer;
     }
 
     public double getTimeStart() {

@@ -86,12 +86,6 @@ public class GameEngine {
                 AppConstants.getBitmapBank().getBall(),
                 opaquePaint));
 
-        gameStats = new GameStatus("Stefan",
-                "Sofija",
-                AppConstants.getBitmapBank().getFiled(),
-                AppConstants.getBitmapBank().getPlayer1Flag(),
-                AppConstants.getBitmapBank().getPlayer2Flag());
-
         gameAudioPlayer = new GameAudioPlayer(context);
     }
 
@@ -109,6 +103,8 @@ public class GameEngine {
 
         return false;
     }
+
+    //pomeraju se svi objekti na terenu i proverava se da li je dat go
     private void updateAllObjects() {
         synchronized (_sync) {
             for (Ball b : allObjectsOnField) {
@@ -265,5 +261,13 @@ public class GameEngine {
 
         allObjectsOnField.get(6).setPosition(new Vector2D(AppConstants.SCREEN_WIDTH / 2, AppConstants.SCREEN_HEIGHT / 2));
         allObjectsOnField.get(6).setVelocity(new Vector2D(0, 0));
+    }
+
+    public GameStatus getGameStats() {
+        return gameStats;
+    }
+
+    public void setGameStats(GameStatus gameStats) {
+        this.gameStats = gameStats;
     }
 }

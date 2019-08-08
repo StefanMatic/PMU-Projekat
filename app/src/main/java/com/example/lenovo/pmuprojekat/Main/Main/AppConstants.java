@@ -12,6 +12,8 @@ public class AppConstants {
     //Mogao bih da dodam i gameStatistics ovde kako bi uvek moglo da se dode do njih
 
     //Constants
+    public static final int NEW_GAME = 1;
+
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 

@@ -1,113 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="@drawable/background_choose1">
+    android:background="@drawable/background_choose1"
+    tools:context=".Main.View.NewGameActivity"
+    android:padding="20dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <EditText
-            android:id="@+id/player1Name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Player 1"
-            android:fontFamily="@font/game"
-            android:inputType="text"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:layout_marginTop="20dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="10dp">
 
+            <EditText
+                android:id="@+id/player1Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Player 1"
+                android:textSize="20dp"
+                android:textColor="@color/playerName"
+                android:textColorHint="@color/playerName"
+                android:fontFamily="@font/game"
+                android:layout_marginBottom="20dp"/>
 
-            <ImageButton
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/arrow_left"
-                android:layout_weight="1"
-                android:maxWidth="20dp"
-                android:maxHeight="20dp"
-                android:clickable="true"
-                android:soundEffectsEnabled="true"
-                android:scaleType="fitXY"
-                />
+                android:layout_gravity="center_horizontal"
+                android:text="Computer:"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/game"
+                android:textColor="@color/playerName"
+                android:layout_marginBottom="10dp"/>
 
-            <ImageView
-                android:id="@+id/player1Flag"
+            <Switch
+                android:id="@+id/player1Computer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-            </ImageView>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/game"
+                android:textOn="Yes"
+                android:textOff="No"
+                android:outlineSpotShadowColor="@color/playerName"
+                android:outlineAmbientShadowColor="@color/playerName"
+                android:textColor="@color/playerName"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/arrow_right"
-                android:layout_weight="1"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <EditText
-            android:id="@+id/player2Name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Player 2"
-            android:fontFamily="@font/game"
-            android:inputType="text"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:layout_marginTop="20dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/arrow_left"
-                android:maxHeight="20dp"
-                android:maxWidth="20dp"
-                android:layout_weight="1"
-                />
-
-            <ImageView
-                android:id="@+id/player2Flag"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
 
-            <Button
+                <ImageButton
+                    android:id="@+id/player1Left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="changeFlagPlayer1Left"/>
+
+                <ImageView
+                    android:id="@+id/player1Flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/player1Right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="changeFlagPlayer1Right"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/player2Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Player 2"
+                android:textColorHint="@color/playerName"
+                android:textSize="20dp"
+                android:textColor="@color/playerName"
+                android:fontFamily="@font/game"
+                android:layout_marginBottom="20dp"/>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/arrow_right"
-                android:layout_weight="1"
-                android:maxHeight="20dp"
-                android:maxWidth="20dp"
-                />
+                android:layout_gravity="center_horizontal"
+                android:text="Computer:"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:fontFamily="@font/game"
+                android:textColor="@color/playerName"
+                android:layout_marginBottom="10dp"/>
+
+            <Switch
+                android:id="@+id/player2Computer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/game"
+                android:textOn="Yes"
+                android:textOff="No"
+                android:outlineSpotShadowColor="@color/playerName"
+                android:outlineAmbientShadowColor="@color/playerName"
+                android:textColor="@color/playerName"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <ImageButton
+                    android:id="@+id/player2Left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="changeFlagPlayer2Left"/>
+
+                <ImageView
+                    android:id="@+id/player2Flag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"/>
+
+                <ImageButton
+                    android:id="@+id/player2Right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clickable="true"
+                    android:layout_weight="1"
+                    android:layout_margin="5dp"
+                    android:onClick="changeFlagPlayer2Right"/>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="START GAME"
+        android:fontFamily="@font/game"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_marginTop="40dp"
+        android:textSize="30dp"
+        android:onClick="startNewGame"/>
 
 </LinearLayout>
