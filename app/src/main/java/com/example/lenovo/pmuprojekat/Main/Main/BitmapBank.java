@@ -45,6 +45,20 @@ public class BitmapBank {
         allFlags.put(2,BitmapFactory.decodeResource(res, R.drawable.flag2));
         allFlags.put(3,BitmapFactory.decodeResource(res, R.drawable.flag3));
         allFlags.put(4,BitmapFactory.decodeResource(res, R.drawable.flag4));
+        allFlags.put(5,BitmapFactory.decodeResource(res, R.drawable.flag5));
+        allFlags.put(6,BitmapFactory.decodeResource(res, R.drawable.flag6));
+        allFlags.put(7,BitmapFactory.decodeResource(res, R.drawable.flag7));
+        allFlags.put(8,BitmapFactory.decodeResource(res, R.drawable.flag8));
+        allFlags.put(9,BitmapFactory.decodeResource(res, R.drawable.flag9));
+        allFlags.put(10,BitmapFactory.decodeResource(res, R.drawable.flag10));
+        allFlags.put(11,BitmapFactory.decodeResource(res, R.drawable.flag11));
+        allFlags.put(12,BitmapFactory.decodeResource(res, R.drawable.flag12));
+        allFlags.put(13,BitmapFactory.decodeResource(res, R.drawable.flag13));
+        allFlags.put(14,BitmapFactory.decodeResource(res, R.drawable.flag14));
+        allFlags.put(15,BitmapFactory.decodeResource(res, R.drawable.flag15));
+        allFlags.put(16,BitmapFactory.decodeResource(res, R.drawable.flag16));
+        allFlags.put(17,BitmapFactory.decodeResource(res, R.drawable.flag17));
+        allFlags.put(18,BitmapFactory.decodeResource(res, R.drawable.flag18));
     }
 
     //Slike se postavljaju u proporcije koje ce biti koriscene u igri

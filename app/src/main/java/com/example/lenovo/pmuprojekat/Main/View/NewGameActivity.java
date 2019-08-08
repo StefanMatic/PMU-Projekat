@@ -69,7 +69,7 @@ public class NewGameActivity extends AppCompatActivity {
         imagePlayer2Flag = findViewById(R.id.player2Flag);
 
         player1Counter = 0;
-        player2Counter = 0;
+        player2Counter = 11;
 
         arrows = AppConstants.getBitmapBank().getArrows();
         arrowsDrawable = new BitmapDrawable[2];

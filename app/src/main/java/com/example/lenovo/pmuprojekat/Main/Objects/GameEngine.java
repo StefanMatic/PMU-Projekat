@@ -172,7 +172,6 @@ public class GameEngine {
     //Proverava da li si na zadatim kordinatama nalazi neki disk
     public void checkIfSelected(float x, float y) {
         int i = 0;
-
         for (Ball ball : allObjectsOnField) {
             if (ball instanceof Player) {
                 if (((Player) ball).checkIfSelected(x, y)) {
@@ -195,7 +194,11 @@ public class GameEngine {
         //izracunati i postaviti velocity
         if (selectedPlayer != null) {
             Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
-            Vector2D newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
+            Vector2D newVelocity;
+            if (gameStats.isCurrentPlayerTurnComputer())
+                newVelocity = movement.divide(AppConstants.COMPUTER_VELOCITY_SPEED);
+            else
+                newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
             selectedPlayer.setVelocity(newVelocity);
             changePlayerTurns();
         }
@@ -234,6 +237,7 @@ public class GameEngine {
             selectedPlayer = (Player) closestBall;
         }
 
+        //Simuliramo kao da kompjuter razmislja kao covek
         try {
             Thread.sleep((long) (Math.random() * 4000));
         } catch (InterruptedException e) {
