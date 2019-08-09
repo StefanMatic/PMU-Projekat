@@ -19,6 +19,7 @@ public class BitmapBank {
     private Bitmap[] arrows;
 
     private HashMap<Integer, Bitmap> allFlags;
+    private HashMap<Integer, Bitmap> allFields;
 
     //ovaj konstruktor postavlja sve podrazumevane parametre
     //moze da se koristi nakon sto se radi reset trenutnog stanja igre
@@ -28,50 +29,59 @@ public class BitmapBank {
         this.field = BitmapFactory.decodeResource(res, R.drawable.field0);
         this.goal = BitmapFactory.decodeResource(res, R.drawable.goal);
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
-        this.selected  =BitmapFactory.decodeResource(res, R.drawable.selected);
+        this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
         this.arrows = new Bitmap[2];
 
         this.arrows[0] = BitmapFactory.decodeResource(res, R.drawable.arrow_left);
         this.arrows[1] = BitmapFactory.decodeResource(res, R.drawable.arrow_right);
 
         initAllFlags(res);
+        initAllFields(res);
         resizeImages();
     }
 
-    private void initAllFlags(Resources res){
+    private void initAllFlags(Resources res) {
         allFlags = new HashMap<>();
-        allFlags.put(0,BitmapFactory.decodeResource(res, R.drawable.flag0));
-        allFlags.put(1,BitmapFactory.decodeResource(res, R.drawable.flag1));
-        allFlags.put(2,BitmapFactory.decodeResource(res, R.drawable.flag2));
-        allFlags.put(3,BitmapFactory.decodeResource(res, R.drawable.flag3));
-        allFlags.put(4,BitmapFactory.decodeResource(res, R.drawable.flag4));
-        allFlags.put(5,BitmapFactory.decodeResource(res, R.drawable.flag5));
-        allFlags.put(6,BitmapFactory.decodeResource(res, R.drawable.flag6));
-        allFlags.put(7,BitmapFactory.decodeResource(res, R.drawable.flag7));
-        allFlags.put(8,BitmapFactory.decodeResource(res, R.drawable.flag8));
-        allFlags.put(9,BitmapFactory.decodeResource(res, R.drawable.flag9));
-        allFlags.put(10,BitmapFactory.decodeResource(res, R.drawable.flag10));
-        allFlags.put(11,BitmapFactory.decodeResource(res, R.drawable.flag11));
-        allFlags.put(12,BitmapFactory.decodeResource(res, R.drawable.flag12));
-        allFlags.put(13,BitmapFactory.decodeResource(res, R.drawable.flag13));
-        allFlags.put(14,BitmapFactory.decodeResource(res, R.drawable.flag14));
-        allFlags.put(15,BitmapFactory.decodeResource(res, R.drawable.flag15));
-        allFlags.put(16,BitmapFactory.decodeResource(res, R.drawable.flag16));
-        allFlags.put(17,BitmapFactory.decodeResource(res, R.drawable.flag17));
-        allFlags.put(18,BitmapFactory.decodeResource(res, R.drawable.flag18));
+        allFlags.put(0, BitmapFactory.decodeResource(res, R.drawable.flag0));
+        allFlags.put(1, BitmapFactory.decodeResource(res, R.drawable.flag1));
+        allFlags.put(2, BitmapFactory.decodeResource(res, R.drawable.flag2));
+        allFlags.put(3, BitmapFactory.decodeResource(res, R.drawable.flag3));
+        allFlags.put(4, BitmapFactory.decodeResource(res, R.drawable.flag4));
+        allFlags.put(5, BitmapFactory.decodeResource(res, R.drawable.flag5));
+        allFlags.put(6, BitmapFactory.decodeResource(res, R.drawable.flag6));
+        allFlags.put(7, BitmapFactory.decodeResource(res, R.drawable.flag7));
+        allFlags.put(8, BitmapFactory.decodeResource(res, R.drawable.flag8));
+        allFlags.put(9, BitmapFactory.decodeResource(res, R.drawable.flag9));
+        allFlags.put(10, BitmapFactory.decodeResource(res, R.drawable.flag10));
+        allFlags.put(11, BitmapFactory.decodeResource(res, R.drawable.flag11));
+        allFlags.put(12, BitmapFactory.decodeResource(res, R.drawable.flag12));
+        allFlags.put(13, BitmapFactory.decodeResource(res, R.drawable.flag13));
+        allFlags.put(14, BitmapFactory.decodeResource(res, R.drawable.flag14));
+        allFlags.put(15, BitmapFactory.decodeResource(res, R.drawable.flag15));
+        allFlags.put(16, BitmapFactory.decodeResource(res, R.drawable.flag16));
+        allFlags.put(17, BitmapFactory.decodeResource(res, R.drawable.flag17));
+        allFlags.put(18, BitmapFactory.decodeResource(res, R.drawable.flag18));
+    }
+
+    private void initAllFields(Resources res) {
+        allFields = new HashMap<>();
+        allFields.put(0, BitmapFactory.decodeResource(res, R.drawable.field0));
+        allFields.put(1, BitmapFactory.decodeResource(res, R.drawable.field1));
+        allFields.put(2, BitmapFactory.decodeResource(res, R.drawable.field2));
+        allFields.put(3, BitmapFactory.decodeResource(res, R.drawable.field3));
     }
 
     //Slike se postavljaju u proporcije koje ce biti koriscene u igri
     private void resizeImages() {
         Bitmap resizePlayer1 = Bitmap.createScaledBitmap(this.player1Flag,
-                (int)(AppConstants.PLAYER_RADIUS*2),
-                (int)(AppConstants.PLAYER_RADIUS*2),
+                (int) (AppConstants.PLAYER_RADIUS * 2),
+                (int) (AppConstants.PLAYER_RADIUS * 2),
                 true);
         this.player1Flag = resizePlayer1;
 
         Bitmap resizePlayer2 = Bitmap.createScaledBitmap(this.player2Flag,
-                (int)(AppConstants.PLAYER_RADIUS*2),
-                (int)(AppConstants.PLAYER_RADIUS*2),
+                (int) (AppConstants.PLAYER_RADIUS * 2),
+                (int) (AppConstants.PLAYER_RADIUS * 2),
                 true);
         this.player2Flag = resizePlayer2;
 
@@ -88,36 +98,24 @@ public class BitmapBank {
         this.goal = resizeGoal;
 
         Bitmap resizeBall = Bitmap.createScaledBitmap(this.ball,
-                (int)(AppConstants.SOCCERBALL_RADIUS*2),
-                (int)(AppConstants.SOCCERBALL_RADIUS*2),
+                (int) (AppConstants.SOCCERBALL_RADIUS * 2),
+                (int) (AppConstants.SOCCERBALL_RADIUS * 2),
                 true);
         this.ball = resizeBall;
 
         //Stavljamo da bude malo vece od velicine igraca
         Bitmap resizeSelected = Bitmap.createScaledBitmap(this.selected,
-                (int)(AppConstants.PLAYER_RADIUS*3),
-                (int)(AppConstants.PLAYER_RADIUS*3),
+                (int) (AppConstants.PLAYER_RADIUS * 3),
+                (int) (AppConstants.PLAYER_RADIUS * 3),
                 true);
         this.selected = resizeSelected;
 
-        this.arrows[0] = resizePicture(this.arrows[0], AppConstants.SCREEN_WIDTH/14, AppConstants.SCREEN_HEIGHT/10);
-        this.arrows[1] = resizePicture(this.arrows[1], AppConstants.SCREEN_WIDTH/14, AppConstants.SCREEN_HEIGHT/10);
+        this.arrows[0] = resizePicture(this.arrows[0], AppConstants.SCREEN_WIDTH / 14, AppConstants.SCREEN_HEIGHT / 10);
+        this.arrows[1] = resizePicture(this.arrows[1], AppConstants.SCREEN_WIDTH / 14, AppConstants.SCREEN_HEIGHT / 10);
     }
 
-    //Moze da se ubace sve slike osim slike lopte i selektovanog igraca
-    public BitmapBank(Resources res, Bitmap player1Flag, Bitmap player2Flag, Bitmap field) {
-        this.player1Flag = player1Flag;
-        this.player2Flag = player2Flag;
-        this.field = field;
-
-        this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
-        this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
-
-        resizeImages();
-    }
-
-    public Bitmap resizePicture(Bitmap original, int width, int height){
-        Bitmap resizePicture = Bitmap.createScaledBitmap(original,width,height, true);
+    public Bitmap resizePicture(Bitmap original, int width, int height) {
+        Bitmap resizePicture = Bitmap.createScaledBitmap(original, width, height, true);
         return resizePicture;
     }
 
@@ -160,12 +158,20 @@ public class BitmapBank {
         return goal;
     }
 
-    public Bitmap getFlag(int i){
+    public Bitmap getFlag(int i) {
         return allFlags.get(i);
     }
 
-    public int getNumberOfFlags(){
+    public int getNumberOfFlags() {
         return allFlags.size();
+    }
+
+    public Bitmap getField(int i) {
+        return allFields.get(i);
+    }
+
+    public int getNumberOfFields() {
+        return allFields.size();
     }
 
     public Bitmap[] getArrows() {

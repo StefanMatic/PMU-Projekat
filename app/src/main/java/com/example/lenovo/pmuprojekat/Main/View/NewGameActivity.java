@@ -199,7 +199,7 @@ public class NewGameActivity extends AppCompatActivity {
 
         AppConstants.getGameEngine().setGameStats(gameStatus);
 
-        Intent intent = new Intent(this, GameView.class);
-        startActivityForResult(intent, AppConstants.NEW_GAME);
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 }

@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.lenovo.pmuprojekat.Main.View.NewGameActivity;
+import com.example.lenovo.pmuprojekat.Main.View.SettingsFieldSelection;
 import com.example.lenovo.pmuprojekat.R;
 
 public class StartActivity extends Activity {
@@ -24,12 +25,19 @@ public class StartActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         setContentView(R.layout.activity_start);
+
+        AppConstants.initialize(this);
     }
 
+    //pokretanje nove igre
     public void startNewGame(View view) {
-        AppConstants.initialize(this);
-
         Intent intent = new Intent(this, NewGameActivity.class);
+        startActivity(intent);
+    }
+
+    //Otvaranje prozora za podesavanje
+    public void openSettings(View view) {
+        Intent intent = new Intent(this, SettingsFieldSelection.class);
         startActivity(intent);
     }
 }

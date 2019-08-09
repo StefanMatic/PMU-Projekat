@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_choose1"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/game"
+        android:textColor="@color/playerName"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textSize="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="FIELDS:"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:padding="10dp"
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:id="@+id/FieldLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="changeFieldLeft"/>
+
+        <ImageView
+            android:id="@+id/FieldPickerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:layout_margin="10dp"/>
+
+        <ImageButton
+            android:id="@+id/FieldRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="changeFieldRight"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SELECT"
+        android:fontFamily="@font/game"
+        android:textSize="30dp"
+        android:layout_gravity="center_horizontal"
+        android:onClick="selectField"/>
+
+
+</LinearLayout>

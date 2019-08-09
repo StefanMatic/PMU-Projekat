@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main.View.GameActivity" />
-        <activity android:name=".Main.View.NewGameActivity"></activity>
+        <activity android:name=".Main.View.NewGameActivity" />
+        <activity android:name=".Main.View.SettingsFieldSelection"></activity>
     </application>
 
 </manifest>
