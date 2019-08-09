@@ -14,9 +14,10 @@ import java.util.ArrayList;
 public class GameEngine {
     private final int SOCCERBALL_INDEX = 6;
     private final int TRANSPARENT_PAINT = 170;
+    private final int TRANSPARENT_FILED_HALF = 100;
     private final int OPAQUE_PAINT = 255;
 
-    private final int MAX_TURN_TIME = 5000;
+    private final int MAX_TURN_TIME = 4500;
     private final int MIN_TURN_TIME = 1000;
 
     private Vector2D touchDown;
@@ -30,10 +31,13 @@ public class GameEngine {
     private GameStatus gameStats;
     private Paint transparentPaint, opaquePaint;
 
+    private boolean computerTurn;
+    private long expectedTime;
 
     public GameEngine(Context context) {
         touchDown = null;
         selectedPlayer = null;
+        computerTurn = false;
 
         transparentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         transparentPaint.setAlpha(TRANSPARENT_PAINT);
@@ -41,7 +45,8 @@ public class GameEngine {
         opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         opaquePaint.setAlpha(OPAQUE_PAINT);
 
-        initFiledAndPlayers(context);
+        //Treba da se odradi pred pocetak igre
+        //initFiledAndPlayers(context);
     }
 
     //inicijacija svih lopta na terenu i pocetak vodenje statistike igre
@@ -94,6 +99,9 @@ public class GameEngine {
         if (checkPlayerTimeLimit()) {
             gameAudioPlayer.playSound(AppConstants.getBEEP());
             changePlayerTurns();
+        }
+        if (gameStats.isCurrentPlayerTurnComputer()) {
+            makeComputerMove();
         }
     }
 
@@ -191,7 +199,6 @@ public class GameEngine {
 
     //Nakon dizanja prsta pokrece se potez
     public void makeMove(float x, float y) {
-        //izracunati i postaviti velocity
         if (selectedPlayer != null) {
             Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
             Vector2D newVelocity;
@@ -208,43 +215,50 @@ public class GameEngine {
     }
 
     private void makeComputerMove() {
-        Ball soccerBall = allObjectsOnField.get(allObjectsOnField.size() - 1);
-        Ball closestBall = null;
+        if (!computerTurn) {
+            computerTurn = true;
 
-        //Ne moze da bude vece distanca od sirine ekrana, pa to uzimamo kao pocetku vrednost
-        float minDistance = AppConstants.SCREEN_WIDTH;
+            long waitingTime = (long) (MIN_TURN_TIME + Math.random() * (MAX_TURN_TIME - MIN_TURN_TIME));
+            expectedTime = System.currentTimeMillis() + waitingTime;
+        }
 
-        if (gameStats.isPlayer1Turn()) {
-            for (int i = 0; i < 3; i++) {
-                float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
-                if (minDistance > dis){
-                    minDistance = dis;
-                    closestBall = allObjectsOnField.get(i);
+        if (computerTurn) {
+            //simulisemo razmisljanje coveka
+            if (System.currentTimeMillis() < expectedTime) {
+                return;
+            }
+
+            Ball soccerBall = allObjectsOnField.get(SOCCERBALL_INDEX);
+            Ball closestBall = null;
+
+            //Ne moze da bude vece distanca od sirine ekrana, pa to uzimamo kao pocetku vrednost
+            float minDistance = AppConstants.SCREEN_WIDTH;
+
+            if (gameStats.isPlayer1Turn()) {
+                for (int i = 0; i < 3; i++) {
+                    float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
+                    if (minDistance > dis) {
+                        minDistance = dis;
+                        closestBall = allObjectsOnField.get(i);
+                    }
+                }
+            } else {
+                for (int i = 3; i < allObjectsOnField.size() - 1; i++) {
+                    float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
+                    if (minDistance > dis) {
+                        minDistance = dis;
+                        closestBall = allObjectsOnField.get(i);
+                    }
                 }
             }
-        }
-        else {
-            for (int i = 3; i < allObjectsOnField.size()-1; i++) {
-                float dis = allObjectsOnField.get(i).getPosition().getDistance(soccerBall.getPosition());
-                if (minDistance > dis){
-                    minDistance = dis;
-                    closestBall = allObjectsOnField.get(i);
-                }
+
+            if (closestBall != null) {
+                selectedPlayer = (Player) closestBall;
             }
-        }
 
-        if (closestBall != null){
-            selectedPlayer = (Player) closestBall;
+            computerTurn = false;
+            makeMove(allObjectsOnField.get(SOCCERBALL_INDEX).getPosition().getX(), allObjectsOnField.get(SOCCERBALL_INDEX).getPosition().getY());
         }
-
-        //Simuliramo kao da kompjuter razmislja kao covek
-        try {
-            Thread.sleep((long) (Math.random() * 4000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        makeMove(soccerBall.getPosition().getX(), soccerBall.getPosition().getY());
     }
 
     private void resetForNextTurn() {
@@ -281,8 +295,6 @@ public class GameEngine {
         }
 
         gameStats.setTimeElapsed(System.currentTimeMillis());
-        if (gameStats.isCurrentPlayerTurnComputer())
-            makeComputerMove();
     }
 
     //Postavljanje igraca u prvobitan raspored

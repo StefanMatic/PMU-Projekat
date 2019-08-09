@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".Main.View.GameActivity" />
         <activity android:name=".Main.View.NewGameActivity" />
-        <activity android:name=".Main.View.SettingsFieldSelection"></activity>
+        <activity android:name=".Main.View.SettingsFieldSelection" />
+        <activity android:name=".Main.View.SettingsActivity"></activity>
     </application>
 
 </manifest>

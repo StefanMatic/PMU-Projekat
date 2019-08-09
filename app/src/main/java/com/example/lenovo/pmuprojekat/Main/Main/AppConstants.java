@@ -26,7 +26,7 @@ public class AppConstants {
     public static final float PLAYER_RADIUS = 50;
 
     public static final float PLAYER_VELOCITY_SPEED = 10;
-    public static final float COMPUTER_VELOCITY_SPEED = 3;
+    public static final float COMPUTER_VELOCITY_SPEED = 12;
 
     public static final float GOAL_POST_WIDTH = 7;
     public static final float GOAL_POST_MASS = 200;

@@ -198,6 +198,7 @@ public class NewGameActivity extends AppCompatActivity {
                 isPlayer2Computer);
 
         AppConstants.getGameEngine().setGameStats(gameStatus);
+        AppConstants.getGameEngine().initFiledAndPlayers(this);
 
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);

@@ -36,6 +36,7 @@ public class GameStatus {
         this.player2Flag = player2Flag;
         this.player1Computer = player1Computer;
         this.player2Computer = player2Computer;
+        this.currentPlayerTurnComputer = player1Computer;
 
         player1Turn = true;
         player2Turn = false;
