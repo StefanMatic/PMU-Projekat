@@ -44,9 +44,6 @@ public class GameEngine {
 
         opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         opaquePaint.setAlpha(OPAQUE_PAINT);
-
-        //Treba da se odradi pred pocetak igre
-        //initFiledAndPlayers(context);
     }
 
     //inicijacija svih lopta na terenu i pocetak vodenje statistike igre
@@ -179,6 +176,10 @@ public class GameEngine {
 
     //Proverava da li si na zadatim kordinatama nalazi neki disk
     public void checkIfSelected(float x, float y) {
+        //ukoliko je na redu racunar, nema mogucnosti da se selektuje igrac
+        if (gameStats.isCurrentPlayerTurnComputer())
+            return;
+
         int i = 0;
         for (Ball ball : allObjectsOnField) {
             if (ball instanceof Player) {
@@ -199,6 +200,10 @@ public class GameEngine {
 
     //Nakon dizanja prsta pokrece se potez
     public void makeMove(float x, float y) {
+        if (gameStats.isCurrentPlayerTurnComputer())
+            if (computerTurn)
+                return;
+
         if (selectedPlayer != null) {
             Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
             Vector2D newVelocity;

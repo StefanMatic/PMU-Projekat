@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,6 +30,7 @@ public class NewGameActivity extends AppCompatActivity {
     private ImageButton imageButtonleft1, imageButtonRight1;
     private ImageButton imageButtonleft2, imageButtonRight2;
     private ImageView imagePlayer1Flag, imagePlayer2Flag;
+    private Button starNewGameButton;
 
     private Switch player1Computer, player2Computer;
     private boolean isPlayer1Computer, isPlayer2Computer;
@@ -108,6 +112,15 @@ public class NewGameActivity extends AppCompatActivity {
                 isPlayer2Computer = isChecked;
             }
         });
+
+        starNewGameButton = findViewById(R.id.startNewGameButton);
+
+        Bitmap buttonBackgroundImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.button_background);
+        buttonBackgroundImage = AppConstants.getBitmapBank().resizePicture(buttonBackgroundImage,
+                (int)(AppConstants.SCREEN_WIDTH*0.4),
+                (int) (AppConstants.SCREEN_HEIGHT*0.2));
+        Drawable background = new BitmapDrawable(this.getResources(), buttonBackgroundImage);
+        starNewGameButton.setBackground(background);
     }
 
     public void changeFlagPlayer1Left(View view) {

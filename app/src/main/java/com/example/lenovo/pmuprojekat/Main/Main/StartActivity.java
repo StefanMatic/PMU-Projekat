@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.lenovo.pmuprojekat.Main.View.NewGameActivity;
+import com.example.lenovo.pmuprojekat.Main.View.SettingsActivity;
 import com.example.lenovo.pmuprojekat.Main.View.SettingsFieldSelection;
 import com.example.lenovo.pmuprojekat.R;
 
@@ -37,7 +38,7 @@ public class StartActivity extends Activity {
 
     //Otvaranje prozora za podesavanje
     public void openSettings(View view) {
-        Intent intent = new Intent(this, SettingsFieldSelection.class);
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }

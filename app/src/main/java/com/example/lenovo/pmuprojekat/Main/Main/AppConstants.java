@@ -14,6 +14,22 @@ public class AppConstants {
     //Constants
     public static final int NEW_GAME = 1;
 
+    public static final int MIN_GAME_GOALS = 1;
+    public static final int MAX_GAME_GOALS = 10;
+    public static final int MIN_GAME_TIME = 1;
+    public static final int MAX_GAME_TIME = 60;
+
+    //default vrednosti igre
+    public static final int DEFAULT_SPEED = 2;
+    public static final int DEFAULT_TIME = 1;
+    public static final int DEFAULT_GOALS = 3;
+    public static final int DEFAULT_FIELDS_INDEX = 0;
+
+    public static int CURRENT_SPEED;
+    public static int CURRENT_TIME;
+    public static int CURRENT_GOALS;
+    public static boolean playOnGoals;
+
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
 
@@ -26,7 +42,7 @@ public class AppConstants {
     public static final float PLAYER_RADIUS = 50;
 
     public static final float PLAYER_VELOCITY_SPEED = 10;
-    public static final float COMPUTER_VELOCITY_SPEED = 12;
+    public static final float COMPUTER_VELOCITY_SPEED = 10;
 
     public static final float GOAL_POST_WIDTH = 7;
     public static final float GOAL_POST_MASS = 200;
@@ -51,6 +67,12 @@ public class AppConstants {
 
         bitmapBank = new BitmapBank(context.getResources());
         gameEngine = new GameEngine(context);
+
+        //postavljanje pocetne vrednosti koji mogu kasnije da se menjaju
+        CURRENT_SPEED = DEFAULT_SPEED;
+        CURRENT_GOALS = DEFAULT_GOALS;
+        CURRENT_TIME = DEFAULT_TIME;
+        playOnGoals = true;
 
         myGameContext = context;
     }
@@ -100,5 +122,37 @@ public class AppConstants {
 
     public static int getBEEP(){
         return BEEP_SOUND;
+    }
+
+    public static int getCurrentSpeed() {
+        return CURRENT_SPEED;
+    }
+
+    public static void setCurrentSpeed(int currentSpeed) {
+        CURRENT_SPEED = currentSpeed;
+    }
+
+    public static int getCurrentTime() {
+        return CURRENT_TIME;
+    }
+
+    public static void setCurrentTime(int currentTime) {
+        CURRENT_TIME = currentTime;
+    }
+
+    public static int getCurrentGoals() {
+        return CURRENT_GOALS;
+    }
+
+    public static void setCurrentGoals(int currentGoals) {
+        CURRENT_GOALS = currentGoals;
+    }
+
+    public static boolean isPlayOnGoals() {
+        return playOnGoals;
+    }
+
+    public static void setPlayOnGoals(boolean playOnGoals) {
+        AppConstants.playOnGoals = playOnGoals;
     }
 }

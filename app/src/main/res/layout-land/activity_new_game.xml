@@ -176,13 +176,13 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/startNewGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="START GAME"
         android:fontFamily="@font/game"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:layout_marginTop="5dp"
         android:textSize="30dp"
         android:onClick="startNewGame"/>
 
