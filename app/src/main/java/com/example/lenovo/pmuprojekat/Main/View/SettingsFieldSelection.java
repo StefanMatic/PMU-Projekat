@@ -98,6 +98,7 @@ public class SettingsFieldSelection extends AppCompatActivity {
     public void selectField(View view) {
         //postavljamo izabrani field u AppConstants i vracamo se na stranicu koja ju je pozvala
         AppConstants.getBitmapBank().setFiled(field);
+        AppConstants.getBitmapBank().setFieldID(fieldCounter);
         finish();
     }
 }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,8 @@ import android.widget.Switch;
 
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.R;
+
+import java.lang.reflect.Field;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -88,13 +92,39 @@ public class SettingsActivity extends AppCompatActivity {
 
         Bitmap buttonBackgroundImage = BitmapFactory.decodeResource(this.getResources(), R.drawable.button_background);
         buttonBackgroundImage = AppConstants.getBitmapBank().resizePicture(buttonBackgroundImage,
-                (int)(AppConstants.SCREEN_WIDTH*0.3),
-                (int) (AppConstants.SCREEN_HEIGHT*0.05));
+                (int) (AppConstants.SCREEN_WIDTH * 0.3),
+                (int) (AppConstants.SCREEN_HEIGHT * 0.05));
         Drawable background = new BitmapDrawable(this.getResources(), buttonBackgroundImage);
 
         fieldSelect.setBackground(background);
         saveChanges.setBackground(background);
         resetSettings.setBackground(background);
+
+        Field selectorWheelPaintSpeed = null;
+        Field selectorWheelPaintTime = null;
+        Field selectorWheelPaintGoals = null;
+        try {
+            selectorWheelPaintSpeed = speedPicker.getClass()
+                    .getDeclaredField("mSelectorWheelPaint");
+            selectorWheelPaintTime = timePicker.getClass()
+                    .getDeclaredField("mSelectorWheelPaint");
+            selectorWheelPaintGoals = goalPicker.getClass()
+                    .getDeclaredField("mSelectorWheelPaint");
+
+            selectorWheelPaintSpeed.setAccessible(true);
+            selectorWheelPaintTime.setAccessible(true);
+            selectorWheelPaintGoals.setAccessible(true);
+
+            ((Paint) selectorWheelPaintSpeed.get(speedPicker)).setColor(Color.WHITE);
+            ((Paint) selectorWheelPaintTime.get(timePicker)).setColor(Color.WHITE);
+            ((Paint) selectorWheelPaintGoals.get(goalPicker)).setColor(Color.WHITE);
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void resetAllSettings(View view) {
@@ -125,11 +155,10 @@ public class SettingsActivity extends AppCompatActivity {
         AppConstants.setCurrentSpeed(speedPicker.getValue());
 
         //postvaljanje uslove igre u zavisnosti od odabranih opcija
-        if (goalSwitch.isChecked()){
+        if (goalSwitch.isChecked()) {
             AppConstants.setPlayOnGoals(true);
             AppConstants.setCurrentGoals(goalPicker.getValue());
-        }
-        else {
+        } else {
             AppConstants.setPlayOnGoals(false);
             AppConstants.setCurrentTime(timePicker.getValue());
         }

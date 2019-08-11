@@ -17,6 +17,7 @@ public class BitmapBank {
     private Bitmap ball;
     private Bitmap selected;
     private Bitmap[] arrows;
+    private int fieldID, player1FlagID, player2FlagID;
 
     private HashMap<Integer, Bitmap> allFlags;
     private HashMap<Integer, Bitmap> allFields;
@@ -30,14 +31,18 @@ public class BitmapBank {
         this.goal = BitmapFactory.decodeResource(res, R.drawable.goal);
         this.ball = BitmapFactory.decodeResource(res, R.drawable.ball);
         this.selected = BitmapFactory.decodeResource(res, R.drawable.selected);
-        this.arrows = new Bitmap[2];
 
+        this.arrows = new Bitmap[2];
         this.arrows[0] = BitmapFactory.decodeResource(res, R.drawable.arrow_left);
         this.arrows[1] = BitmapFactory.decodeResource(res, R.drawable.arrow_right);
 
         initAllFlags(res);
         initAllFields(res);
         resizeImages();
+
+        this.fieldID = 0;
+        this.player1FlagID = 0;
+        this.player2FlagID = 1;
     }
 
     private void initAllFlags(Resources res) {
@@ -176,5 +181,44 @@ public class BitmapBank {
 
     public Bitmap[] getArrows() {
         return arrows;
+    }
+
+    public int getFieldID() {
+        return fieldID;
+    }
+
+    public void setFieldID(int fieldID) {
+        this.fieldID = fieldID;
+    }
+
+    public int getPlayer1FlagID() {
+        return player1FlagID;
+    }
+
+    public void setPlayer1FlagID(int player1FlagID) {
+        this.player1FlagID = player1FlagID;
+    }
+
+    public int getPlayer2FlagID() {
+        return player2FlagID;
+    }
+
+    public void setPlayer2FlagID(int player2FlagID) {
+        this.player2FlagID = player2FlagID;
+    }
+
+    public void setNewFieldByID(int id){
+        Bitmap fil = getField(id);
+        setFiled(fil);
+    }
+
+    public void setPlayer1FlagByID(int id){
+        Bitmap flag = getFlag(id);
+        setPlayer1Flag(flag);
+    }
+
+    public void setPlayer2FlagByID(int id){
+        Bitmap flag = getFlag(id);
+        setPlayer2Flag(flag);
     }
 }

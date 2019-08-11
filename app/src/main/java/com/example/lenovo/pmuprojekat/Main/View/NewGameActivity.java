@@ -75,6 +75,7 @@ public class NewGameActivity extends AppCompatActivity {
         player1Counter = 0;
         player2Counter = 11;
 
+        arrows = new Bitmap[2];
         arrows = AppConstants.getBitmapBank().getArrows();
         arrowsDrawable = new BitmapDrawable[2];
         arrowsDrawable[0] = new BitmapDrawable(this.getResources(),arrows[0]);
@@ -93,7 +94,6 @@ public class NewGameActivity extends AppCompatActivity {
 
         imagePlayer1Flag.setImageBitmap(player1Flag);
         imagePlayer2Flag.setImageBitmap(player2Flag);
-
 
         //Podesavanje switch komponenata na ekranu
         player1Computer = findViewById(R.id.player1Computer);
@@ -121,6 +121,14 @@ public class NewGameActivity extends AppCompatActivity {
                 (int) (AppConstants.SCREEN_HEIGHT*0.2));
         Drawable background = new BitmapDrawable(this.getResources(), buttonBackgroundImage);
         starNewGameButton.setBackground(background);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (AppConstants.isGamePaused())
+            finish();
     }
 
     public void changeFlagPlayer1Left(View view) {
@@ -201,6 +209,8 @@ public class NewGameActivity extends AppCompatActivity {
         //Postavljanje svih dobijenih podataka na mesta koja cemo koristiti dalje u programu
         AppConstants.getBitmapBank().setPlayer1Flag(AppConstants.getBitmapBank().getFlag(player1Counter));
         AppConstants.getBitmapBank().setPlayer2Flag(AppConstants.getBitmapBank().getFlag(player2Counter));
+        AppConstants.getBitmapBank().setPlayer1FlagID(player1Counter);
+        AppConstants.getBitmapBank().setPlayer2FlagID(player2Counter);
 
         GameStatus gameStatus = new GameStatus(player1Name.getText().toString(),
                 player2Name.getText().toString(),

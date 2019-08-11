@@ -1,6 +1,7 @@
 package com.example.lenovo.pmuprojekat.Main.Objects;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -8,13 +9,15 @@ import android.graphics.Paint;
 import com.example.lenovo.pmuprojekat.Main.GameAudio.GameAudioPlayer;
 import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
+import com.example.lenovo.pmuprojekat.Main.Main.StartActivity;
+import com.example.lenovo.pmuprojekat.Main.SavedGame.SaveGame;
+import com.example.lenovo.pmuprojekat.Main.View.GameOverActivity;
 
 import java.util.ArrayList;
 
 public class GameEngine {
     private final int SOCCERBALL_INDEX = 6;
     private final int TRANSPARENT_PAINT = 170;
-    private final int TRANSPARENT_FILED_HALF = 100;
     private final int OPAQUE_PAINT = 255;
 
     private final int MAX_TURN_TIME = 4500;
@@ -29,21 +32,25 @@ public class GameEngine {
     private Goal goal;
     private GameAudioPlayer gameAudioPlayer;
     private GameStatus gameStats;
-    private Paint transparentPaint, opaquePaint;
+    private Paint transparentPaint, opaquePaint, normal;
 
     private boolean computerTurn;
     private long expectedTime;
+    private boolean gameOver;
 
     public GameEngine(Context context) {
         touchDown = null;
         selectedPlayer = null;
         computerTurn = false;
+        gameOver = false;
 
         transparentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         transparentPaint.setAlpha(TRANSPARENT_PAINT);
 
         opaquePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         opaquePaint.setAlpha(OPAQUE_PAINT);
+
+        normal = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     //inicijacija svih lopta na terenu i pocetak vodenje statistike igre
@@ -91,7 +98,29 @@ public class GameEngine {
         gameAudioPlayer = new GameAudioPlayer(context);
     }
 
+    public void initAudio(Context context){
+        gameAudioPlayer = new GameAudioPlayer(context);
+    }
+
+    public void initGoal(){
+        goal = new Goal();
+        goal.setGoalposts();
+    }
+
     public void update() {
+        if (gameStats.checkIfGameOver()) {
+            //slucaj da se nit ne prekine
+            if (gameOver) {
+                return;
+            }
+            gameOver = true;
+
+            AppConstants.setGameOver(true);
+            Intent intent = new Intent(AppConstants.getMyGameContext(), GameOverActivity.class);
+            AppConstants.getMyGameContext().startActivity(intent);
+            return;
+        }
+
         updateAllObjects();
         if (checkPlayerTimeLimit()) {
             gameAudioPlayer.playSound(AppConstants.getBEEP());
@@ -208,9 +237,9 @@ public class GameEngine {
             Vector2D movement = new Vector2D(x, y).subtract(selectedPlayer.position);
             Vector2D newVelocity;
             if (gameStats.isCurrentPlayerTurnComputer())
-                newVelocity = movement.divide(AppConstants.COMPUTER_VELOCITY_SPEED);
+                newVelocity = movement.divide(AppConstants.COMPUTER_VELOCITY_SPEED * AppConstants.CURRENT_SPEED);
             else
-                newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED);
+                newVelocity = movement.divide(AppConstants.PLAYER_VELOCITY_SPEED * AppConstants.CURRENT_SPEED);
             selectedPlayer.setVelocity(newVelocity);
             changePlayerTurns();
         }
@@ -332,5 +361,14 @@ public class GameEngine {
 
     public void setGameStats(GameStatus gameStats) {
         this.gameStats = gameStats;
+    }
+
+    public SaveGame saveGame(){
+        gameStats.setAllBalls(allObjectsOnField);
+        return gameStats.saveGame();
+    }
+
+    public void setAllObjectsOnField(ArrayList<Ball> allObjectsOnField) {
+        this.allObjectsOnField = allObjectsOnField;
     }
 }

@@ -11,7 +11,7 @@ import java.lang.Thread;
 //Klasa GameThread predstavlja nit koja iscrtava sve komponente na ekran
 //uz odgovarajuci period spavanja kako bi to izgledalo prirodno
 public class GameThread extends Thread {
-    private static final int THREAD_SLEEP_TIME = 2;
+    private static final int THREAD_SLEEP_TIME = 1;
 
     private SurfaceHolder mySurfaceHolder;
     private boolean isRunning;
@@ -24,24 +24,31 @@ public class GameThread extends Thread {
     public void run() {
         super.run();
 
-        while (isRunning){
+        while (isRunning) {
             Canvas canvas = mySurfaceHolder.lockCanvas();
             AppConstants.getGameEngine().update();
 
-            synchronized (mySurfaceHolder){
-                //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje
-                AppConstants.getGameEngine().draw(canvas);
+            boolean game = AppConstants.isGameOver();
+
+            if (!AppConstants.isGameOver() && canvas != null) {
+                synchronized (mySurfaceHolder) {
+                    //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje
+                    AppConstants.getGameEngine().draw(canvas);
+                }
             }
 
             if (canvas != null)
                 mySurfaceHolder.unlockCanvasAndPost(canvas);
 
-
-            try{
+            if (AppConstants.isGameOver()){
+                isRunning = false;
+                AppConstants.stopThread(this);
+            }
+            try {
                 sleep(THREAD_SLEEP_TIME);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-           }
+            }
 
         }
     }

@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.Main.Objects.Ball;
+import com.example.lenovo.pmuprojekat.Main.SavedGame.SaveGame;
+import com.example.lenovo.pmuprojekat.Main.SavedGame.SavePlayer;
 import com.example.lenovo.pmuprojekat.R;
 
 import java.util.ArrayList;
@@ -24,8 +26,13 @@ public class GameStatus {
     private Bitmap player1Flag, player2Flag;
     private double timeStart;
     private double timeElapsed;
+    private double timeEnd;
     private Paint myPaint;
     private boolean currentPlayerTurnComputer;
+    private boolean gameOver;
+
+    public GameStatus() {
+    }
 
     @SuppressLint("NewApi")
     public GameStatus(String player1, String player2, Bitmap fieldImage, Bitmap player1Flag, Bitmap player2Flag, boolean player1Computer, boolean player2Computer) {
@@ -53,7 +60,9 @@ public class GameStatus {
         myPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         myPaint.setColor(Color.WHITE);
         myPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        myPaint.setTextSize(50);
+        myPaint.setTextSize(60);
+
+        this.gameOver = false;
     }
 
     public boolean isPlayer1Turn() {
@@ -177,7 +186,67 @@ public class GameStatus {
         return time;
     }
 
+    public void setCurrentPlayerTurnComputer(boolean currentPlayerTurnComputer) {
+        this.currentPlayerTurnComputer = currentPlayerTurnComputer;
+    }
+
     public boolean isCurrentPlayerTurnComputer() {
         return currentPlayerTurnComputer;
+    }
+
+    public boolean checkIfGameOver() {
+        if (AppConstants.isPlayOnGoals()) {
+            if (player1Score == AppConstants.CURRENT_GOALS || player2Score == AppConstants.CURRENT_GOALS) {
+                timeEnd = System.currentTimeMillis();
+                return true;
+            }
+        } else {
+            double matchDuration = System.currentTimeMillis() - timeStart;
+            double matchDurationMinutes = matchDuration / 1000 / 60;
+
+            if (matchDurationMinutes >= AppConstants.CURRENT_TIME) {
+                timeEnd = System.currentTimeMillis();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public Bitmap getPlayer1Flag() {
+        return player1Flag;
+    }
+
+    public Bitmap getPlayer2Flag() {
+        return player2Flag;
+    }
+
+    public Bitmap getFieldImage() {
+        return fieldImage;
+    }
+
+    public double getTimeEnd() {
+        return timeEnd;
+    }
+
+    public SaveGame saveGame() {
+        SavePlayer savePlayer1, savePlayer2;
+        SaveGame saveGame;
+
+        savePlayer1 = new SavePlayer(player1, AppConstants.getBitmapBank().getPlayer1FlagID(), player1Score, player1Computer, player1Turn);
+        savePlayer2 = new SavePlayer(player2, AppConstants.getBitmapBank().getPlayer2FlagID(), player2Score, player2Computer, player2Turn);
+
+        saveGame = new SaveGame(allBalls,
+                savePlayer1,
+                savePlayer2,
+                timeStart,
+                timeElapsed,
+                AppConstants.CURRENT_SPEED,
+                AppConstants.CURRENT_GOALS,
+                AppConstants.CURRENT_TIME,
+                AppConstants.isPlayOnGoals(),
+                AppConstants.getBitmapBank().getFieldID());
+
+        return saveGame;
     }
 }

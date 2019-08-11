@@ -22,13 +22,12 @@ public class AppConstants {
     //default vrednosti igre
     public static final int DEFAULT_SPEED = 2;
     public static final int DEFAULT_TIME = 1;
-    public static final int DEFAULT_GOALS = 3;
+    public static final int DEFAULT_GOALS = 2;
     public static final int DEFAULT_FIELDS_INDEX = 0;
 
     public static int CURRENT_SPEED;
     public static int CURRENT_TIME;
     public static int CURRENT_GOALS;
-    public static boolean playOnGoals;
 
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
@@ -41,8 +40,8 @@ public class AppConstants {
     public static final float SOCCERBALL_RADIUS = 30;
     public static final float PLAYER_RADIUS = 50;
 
-    public static final float PLAYER_VELOCITY_SPEED = 10;
-    public static final float COMPUTER_VELOCITY_SPEED = 10;
+    public static final float PLAYER_VELOCITY_SPEED = 7;
+    public static final float COMPUTER_VELOCITY_SPEED = 7;
 
     public static final float GOAL_POST_WIDTH = 7;
     public static final float GOAL_POST_MASS = 200;
@@ -53,8 +52,11 @@ public class AppConstants {
 
     private static BitmapBank bitmapBank;
     private static GameEngine gameEngine;
+    public static boolean playOnGoals;
 
     public static Context myGameContext;
+    public static boolean gameOver;
+    public static boolean gamePaused;
 
     public static void initialize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
@@ -69,12 +71,15 @@ public class AppConstants {
         gameEngine = new GameEngine(context);
 
         //postavljanje pocetne vrednosti koji mogu kasnije da se menjaju
+        //promeniti da se ne radi svaki put kada se ude u startActivity
         CURRENT_SPEED = DEFAULT_SPEED;
         CURRENT_GOALS = DEFAULT_GOALS;
         CURRENT_TIME = DEFAULT_TIME;
         playOnGoals = true;
+        gameOver = false;
 
         myGameContext = context;
+        gamePaused = false;
     }
 
     public static BitmapBank getBitmapBank() {
@@ -93,7 +98,7 @@ public class AppConstants {
         AppConstants.gameEngine = gameEngine;
     }
 
-    public static void StopThread(Thread thread) {
+    public static void stopThread(Thread thread) {
         boolean retry = true;
         while (retry) {
             try {
@@ -155,4 +160,22 @@ public class AppConstants {
     public static void setPlayOnGoals(boolean playOnGoals) {
         AppConstants.playOnGoals = playOnGoals;
     }
+
+    public static boolean isGameOver() {
+        return AppConstants.gameOver;
+    }
+
+    public static void setGameOver(boolean gameOver) {
+        AppConstants.gameOver = gameOver;
+    }
+
+    public static boolean isGamePaused() {
+        return gamePaused;
+    }
+
+    public static void setGamePaused(boolean gamePaused) {
+        AppConstants.gamePaused = gamePaused;
+    }
+
+
 }

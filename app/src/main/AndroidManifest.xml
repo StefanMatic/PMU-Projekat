@@ -21,7 +21,9 @@
         <activity android:name=".Main.View.GameActivity" />
         <activity android:name=".Main.View.NewGameActivity" />
         <activity android:name=".Main.View.SettingsFieldSelection" />
-        <activity android:name=".Main.View.SettingsActivity"></activity>
+        <activity android:name=".Main.View.SettingsActivity" />
+        <activity android:name=".Main.View.GameOverActivity" />
+        <activity android:name=".Main.View.ContinueGameActivity"></activity>
     </application>
 
 </manifest>

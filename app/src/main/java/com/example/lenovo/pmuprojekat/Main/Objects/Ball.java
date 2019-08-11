@@ -26,6 +26,15 @@ public abstract class Ball implements CollisionHandler {
         velocity = new Vector2D(0, 0);
     }
 
+    public Ball(Ball ball){
+        this.position = ball.getPosition();
+        this.velocity = ball.getVelocity();
+        this.radius = ball.radius;
+        this.mass = ball.getMass();
+        this.image = ball.getImage();
+        this.paint = ball.getPaint();
+    }
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(image, this.position.getX() - radius, this.position.getY() - radius, paint);
     }
@@ -203,7 +212,13 @@ public abstract class Ball implements CollisionHandler {
         this.image = image;
     }
 
+    public Paint getPaint() {
+        return paint;
+    }
+
     public void setPaint(Paint paint) {
         this.paint = paint;
     }
+
+
 }
