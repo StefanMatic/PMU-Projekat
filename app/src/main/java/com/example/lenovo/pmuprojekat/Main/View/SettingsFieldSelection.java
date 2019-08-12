@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +17,8 @@ import android.widget.ImageView;
 
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingsFieldSelection extends AppCompatActivity {
     private ImageView fieldView;

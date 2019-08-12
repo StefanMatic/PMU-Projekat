@@ -1,9 +1,11 @@
 package com.example.lenovo.pmuprojekat.Main.View;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 
 import com.example.lenovo.pmuprojekat.R;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class GameOverActivity extends AppCompatActivity {
 
