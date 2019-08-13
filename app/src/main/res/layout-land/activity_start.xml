@@ -77,7 +77,8 @@
                 android:fontFamily="@font/game"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:onClick="seeStatistics"/>
 
             <Button
                 android:id="@+id/settingsButton"

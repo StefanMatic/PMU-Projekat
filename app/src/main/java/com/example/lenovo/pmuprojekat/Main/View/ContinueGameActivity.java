@@ -1,5 +1,6 @@
 package com.example.lenovo.pmuprojekat.Main.View;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
+import com.example.lenovo.pmuprojekat.Main.Handlers.FinishThread;
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.Main.Main.StartActivity;
 import com.example.lenovo.pmuprojekat.Main.SavedGame.SaveGame;
@@ -19,8 +21,9 @@ import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ContinueGameActivity extends AppCompatActivity {
+public class ContinueGameActivity extends AppCompatActivity implements FinishThread {
     private GameView view;
+    private Activity continueGameActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,9 @@ public class ContinueGameActivity extends AppCompatActivity {
         AppConstants.getGameEngine().setAllObjectsOnField(newGameStatus.getAllBalls());
 
         AppConstants.setMyGameContext(this);
+        AppConstants.getGameEngine().setGameView(view);
+        AppConstants.getGameEngine().setGameActivity(this);
+        AppConstants.getGameEngine().setFinisher(this);
 
         setContentView(view);
     }
@@ -77,7 +83,7 @@ public class ContinueGameActivity extends AppCompatActivity {
 
     //Postavljanje svih neophodnih podataka za klasu GameStatus
     private GameStatus setUpGameStats(SaveGame saveGame){
-
+        //Postavljanje nove GameStats klase
         GameStatus gameStatus = new GameStatus(
                 saveGame.getPlayer1().getName(),
                 saveGame.getPlayer2().getName(),
@@ -88,6 +94,7 @@ public class ContinueGameActivity extends AppCompatActivity {
                 saveGame.getPlayer2().isComputer()
         );
 
+        //postavljanje svih naknadnih podataka koje se ne traze u konstrukoru
         gameStatus.setPlayer1Score(saveGame.getPlayer1().getScore());
         gameStatus.setPlayer2Score(saveGame.getPlayer2().getScore());
         gameStatus.setPlayer1Turn(saveGame.getPlayer1().isMyTurn());
@@ -101,7 +108,6 @@ public class ContinueGameActivity extends AppCompatActivity {
         else{
             gameStatus.setCurrentPlayerTurnComputer(saveGame.getPlayer2().isComputer());
         }
-
         return gameStatus;
     }
 
@@ -138,7 +144,8 @@ public class ContinueGameActivity extends AppCompatActivity {
     protected void onPause() {
         if (!AppConstants.isGameOver()){
             saveGame();
-            view.stopThread();
+            view.stopThreadFromRunning();
+            view.stopThreadForever();
 
             finish();
         }
@@ -166,5 +173,10 @@ public class ContinueGameActivity extends AppCompatActivity {
         float y = event.getY();
 
         AppConstants.getGameEngine().makeMove(x,y);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 }

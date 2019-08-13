@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.NumberPicker;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.R;
@@ -164,6 +165,8 @@ public class SettingsActivity extends AppCompatActivity {
             AppConstants.setPlayOnGoals(false);
             AppConstants.setCurrentTime(timePicker.getValue());
         }
+
+        Toast.makeText(this, "All changes are saved", Toast.LENGTH_SHORT).show();
 
         //nakon postavljanja novih vrednosti, napustamo activity
         finish();

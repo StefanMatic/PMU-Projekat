@@ -34,9 +34,9 @@ public class Goal implements CollisionHandler {
         width = calculateX(48, 800);
         height = radius;
         if (this.start.getX() == 0)
-            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.2), null, new Paint());
+            post = new SoccerBall(new Vector2D(end.getX(), end.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.8), null, new Paint());
         else
-            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 2.2), null, new Paint());
+            post = new SoccerBall(new Vector2D(start.getX(), start.getY()), AppConstants.GOAL_POST_MASS, (float) (radius * 1.8), null, new Paint());
     }
 
     public Vector2D getStart() {
@@ -122,28 +122,6 @@ public class Goal implements CollisionHandler {
             return true;
 
         return false;
-
-
-        /*
-        Vector2D goalSideHelper;
-        Vector2D goalSideHalf;
-
-        for (int i = 0; i < 2; i++) {
-            Goal gp = goalposts.get(i);
-            goalSideHalf = new Vector2D(width / 2, height / 2);
-            goalSideHelper = new Vector2D(gp.end.getX() + goalSideHalf.getX(), gp.end.getY() + goalSideHalf.getY());
-
-            Vector2D difference = ball.getPosition().subtract(goalSideHelper);
-            Vector2D clamped = new Vector2D(clamp(difference.getX(), -goalSideHalf.getX(), goalSideHalf.getX()), clamp(difference.getY(), -goalSideHalf.getY(), goalSideHalf.getY()));
-
-            Vector2D closestPoint = goalSideHelper.add(clamped);
-            float distance = closestPoint.getDistance(ball.getPosition());
-
-            if (distance <= ball.getRadius())
-                return true;
-        }
-        return false;
-        */
     }
 
     private boolean checkBallCollisionRight(Ball ball) {
@@ -174,7 +152,7 @@ public class Goal implements CollisionHandler {
             if (checkBallCollision(ball, gp) && checkIfSmallEnoughDistance(ball, gp)) {
                 collisionPoints.add(new Vector2D(ball.getPosition().getX(), ball.getPosition().getY()));
                 ball.resetPositionOnce();
-                if (ball.checkBallCollision(gp.getPost())) {
+                if (ball.checkBallCollision(gp.getPost()) && !checkIfBehindPostLeft(ball)) {
                     //ball-like collision
                     resolveGoalpostCollision(gp.getPost(), ball);
                     break;
@@ -191,7 +169,7 @@ public class Goal implements CollisionHandler {
                 collisionPoints.add(new Vector2D(ball.getPosition().getX(), ball.getPosition().getY()));
                 ball.resetPositionOnce();
 
-                if (ball.checkBallCollision(gp.getPost())) {
+                if (ball.checkBallCollision(gp.getPost()) && !checkIfBehindPostRight(ball)) {
                     //ball-like collision
                     resolveGoalpostCollision(gp.getPost(), ball);
                 } else {
@@ -236,17 +214,6 @@ public class Goal implements CollisionHandler {
         ball.setVelocity(newNormalVelocity2Vector.add(newTangetVelocity2Vector));
     }
 
-    /*
-    public void resolveGoalpostCollision(Vector2D goalpost, Ball ball) {
-        Vector2D newVelocity2 = Vector2D.subtract(ball.getPosition(), goalpost);
-        newVelocity2 = newVelocity2.normalize();
-        newVelocity2.multiply(ball.getVelocity().dot(newVelocity2));
-        Vector2D newVelocity1 = Vector2D.subtract(ball.getVelocity(), newVelocity2);
-
-        ball.setVelocity(Vector2D.subtract(newVelocity1, newVelocity2));
-    }
-    */
-
     public double minimumDistance(Vector2D s1, Vector2D s2, Vector2D p) {
         double length = Vector2D.subtract(s1, s2).getLength();
         double lengthSquared = length * length;
@@ -268,6 +235,25 @@ public class Goal implements CollisionHandler {
 
         return false;
     }
+
+    public boolean checkIfBehindPostLeft(Ball ball){
+        Ball post = goalposts.get(FIRST).getPost();
+
+        if (post.getPosition().getX() > ball.getPosition().getX())
+            return true;
+
+        return false;
+    }
+
+    public boolean checkIfBehindPostRight(Ball ball){
+        Ball post = goalposts.get(THIRD).getPost();
+
+        if (post.getPosition().getX() < ball.getPosition().getX())
+            return true;
+
+        return false;
+    }
+
 
     //Provera da li je dat gol na strani player1 - levoj strani
     public boolean checkIfPlayer1Goal(Ball ball){

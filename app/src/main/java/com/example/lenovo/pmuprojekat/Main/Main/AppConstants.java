@@ -7,6 +7,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import com.example.lenovo.pmuprojekat.Main.Objects.GameEngine;
+import com.example.lenovo.pmuprojekat.Main.View.GameView;
 
 public class AppConstants {
     //Mogao bih da dodam i gameStatistics ovde kako bi uvek moglo da se dode do njih
@@ -57,6 +58,10 @@ public class AppConstants {
     public static Context myGameContext;
     public static boolean gameOver;
     public static boolean gamePaused;
+
+    public static String player1Name, player2Name;
+    public static int player1Score, player2Score;
+    public static double gameDuration;
 
     public static void initialize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
@@ -177,5 +182,58 @@ public class AppConstants {
         AppConstants.gamePaused = gamePaused;
     }
 
+    public static String getPlayer1Name() {
+        return player1Name;
+    }
 
+    public static void setPlayer1Name(String player1Name) {
+        AppConstants.player1Name = player1Name;
+    }
+
+    public static String getPlayer2Name() {
+        return player2Name;
+    }
+
+    public static void setPlayer2Name(String player2Name) {
+        AppConstants.player2Name = player2Name;
+    }
+
+    public static int getPlayer1Score() {
+        return player1Score;
+    }
+
+    public static void setPlayer1Score(int player1Score) {
+        AppConstants.player1Score = player1Score;
+    }
+
+    public static int getPlayer2Score() {
+        return player2Score;
+    }
+
+    public static void setPlayer2Score(int player2Score) {
+        AppConstants.player2Score = player2Score;
+    }
+
+    public static double getGameDuration() {
+        return gameDuration;
+    }
+
+    public static void setGameDuration(double gameDuration) {
+        AppConstants.gameDuration = gameDuration;
+    }
+
+    public static void resetForNewGame(){
+        player1Name = null;
+        player2Name = null;
+        gameDuration = 0;
+        player1Score = 0;
+        player2Score = 0;
+        gameOver = false;
+        gamePaused = false;
+        myGameContext = null;
+
+        gameEngine.setGameView(null);
+        gameEngine.setGameStats(null);
+        gameEngine.setGameOver(false);
+    }
 }

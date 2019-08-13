@@ -129,7 +129,7 @@ public class NewGameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (AppConstants.isGamePaused())
+        if (AppConstants.isGamePaused() || AppConstants.isGameOver())
             finish();
     }
 

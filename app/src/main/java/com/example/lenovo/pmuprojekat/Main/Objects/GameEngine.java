@@ -1,5 +1,6 @@
 package com.example.lenovo.pmuprojekat.Main.Objects;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,12 +9,17 @@ import android.graphics.Paint;
 
 import com.example.lenovo.pmuprojekat.Main.GameAudio.GameAudioPlayer;
 import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
+import com.example.lenovo.pmuprojekat.Main.Handlers.FinishThread;
 import com.example.lenovo.pmuprojekat.Main.Main.AppConstants;
 import com.example.lenovo.pmuprojekat.Main.Main.StartActivity;
 import com.example.lenovo.pmuprojekat.Main.SavedGame.SaveGame;
+import com.example.lenovo.pmuprojekat.Main.View.GameActivity;
 import com.example.lenovo.pmuprojekat.Main.View.GameOverActivity;
+import com.example.lenovo.pmuprojekat.Main.View.GameView;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class GameEngine {
     private final int SOCCERBALL_INDEX = 6;
@@ -37,6 +43,10 @@ public class GameEngine {
     private boolean computerTurn;
     private long expectedTime;
     private boolean gameOver;
+
+    private AppCompatActivity gameActivity;
+    private GameView gameView;
+    private FinishThread finisher;
 
     public GameEngine(Context context) {
         touchDown = null;
@@ -116,8 +126,15 @@ public class GameEngine {
             gameOver = true;
 
             AppConstants.setGameOver(true);
-            Intent intent = new Intent(AppConstants.getMyGameContext(), GameOverActivity.class);
-            AppConstants.getMyGameContext().startActivity(intent);
+
+            AppConstants.setPlayer1Name(gameStats.getPlayer1());
+            AppConstants.setPlayer2Name(gameStats.getPlayer2());
+            AppConstants.setPlayer1Score(gameStats.getPlayer1Score());
+            AppConstants.setPlayer2Score(gameStats.getPlayer2Score());
+            AppConstants.setGameDuration(gameStats.getGameDuration());
+
+            gameView.stopThreadFromRunning();
+            finisher.finishActivity();
             return;
         }
 
@@ -370,5 +387,25 @@ public class GameEngine {
 
     public void setAllObjectsOnField(ArrayList<Ball> allObjectsOnField) {
         this.allObjectsOnField = allObjectsOnField;
+    }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+    }
+
+    public GameView getGameView(){
+        return this.gameView;
+    }
+
+    public void setGameActivity(AppCompatActivity gameActivity) {
+        this.gameActivity = gameActivity;
+    }
+
+    public void setFinisher(FinishThread finisher) {
+        this.finisher = finisher;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

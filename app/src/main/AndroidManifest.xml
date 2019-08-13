@@ -22,8 +22,10 @@
         <activity android:name=".Main.View.NewGameActivity" />
         <activity android:name=".Main.View.SettingsFieldSelection" />
         <activity android:name=".Main.View.SettingsActivity" />
-        <activity android:name=".Main.View.GameOverActivity" />
-        <activity android:name=".Main.View.ContinueGameActivity"></activity>
+        <activity android:name=".Main.View.GameOverActivity"
+            android:parentActivityName=".Main.Main.StartActivity"/>
+        <activity android:name=".Main.View.ContinueGameActivity" />
+        <activity android:name=".Main.View.StatisticsActivity"></activity>
     </application>
 
 </manifest>

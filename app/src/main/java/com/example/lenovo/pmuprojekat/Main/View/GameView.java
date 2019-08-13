@@ -53,8 +53,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         return gameThread;
     }
 
-    public void stopThread(){
+    public void stopThreadFromRunning(){
         gameThread.setRunning(false);
+        //AppConstants.stopThread(gameThread);
+    }
+
+    public void stopThreadForever(){
         AppConstants.stopThread(gameThread);
+    }
+
+    public void killThread() {
+        gameThread.interrupt();
     }
 }

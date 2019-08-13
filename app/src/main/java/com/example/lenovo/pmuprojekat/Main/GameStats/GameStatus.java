@@ -249,4 +249,16 @@ public class GameStatus {
 
         return saveGame;
     }
+
+    public double getGameDuration(){
+        return timeEnd - timeStart;
+    }
+
+    public String getPlayer1() {
+        return player1;
+    }
+
+    public String getPlayer2() {
+        return player2;
+    }
 }

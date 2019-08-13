@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/blackbord_green"
+    android:background="@drawable/blackboard_black"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -122,6 +122,18 @@
                     android:outlineSpotShadowColor="@color/white"
                     android:visibility="visible">
                 </NumberPicker>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(min)"
+                    android:fontFamily="@font/game"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="italic"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_marginLeft="15dp"/>
             </LinearLayout>
         </LinearLayout>
 

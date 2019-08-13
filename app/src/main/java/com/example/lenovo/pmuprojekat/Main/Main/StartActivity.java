@@ -19,9 +19,11 @@ import com.example.lenovo.pmuprojekat.Main.GameStats.GameStatus;
 import com.example.lenovo.pmuprojekat.Main.SavedGame.SaveGame;
 import com.example.lenovo.pmuprojekat.Main.View.ContinueGameActivity;
 import com.example.lenovo.pmuprojekat.Main.View.GameActivity;
+import com.example.lenovo.pmuprojekat.Main.View.GameOverActivity;
 import com.example.lenovo.pmuprojekat.Main.View.NewGameActivity;
 import com.example.lenovo.pmuprojekat.Main.View.SettingsActivity;
 import com.example.lenovo.pmuprojekat.Main.View.SettingsFieldSelection;
+import com.example.lenovo.pmuprojekat.Main.View.StatisticsActivity;
 import com.example.lenovo.pmuprojekat.R;
 import com.google.gson.Gson;
 
@@ -69,7 +71,7 @@ public class StartActivity extends Activity {
         editor.clear();
         editor.apply();
 
-        AppConstants.setGamePaused(false);
+        AppConstants.resetForNewGame();
 
         Intent intent = new Intent(this, NewGameActivity.class);
         startActivity(intent);
@@ -86,6 +88,20 @@ public class StartActivity extends Activity {
     protected void onResume() {
         super.onResume();
         checkIfGameSaved();
+
+        if (AppConstants.isGameOver()){
+
+            AppConstants.getGameEngine().getGameView().stopThreadForever();
+
+            AppConstants.setGameOver(false);
+            Intent intent = new Intent(this, GameOverActivity.class);
+            intent.putExtra(GameOverActivity.PLAYER1_NAME, AppConstants.getPlayer1Name());
+            intent.putExtra(GameOverActivity.PLAYER2_NAME, AppConstants.getPlayer2Name());
+            intent.putExtra(GameOverActivity.PLAYER1_SCORE, AppConstants.getPlayer1Score());
+            intent.putExtra(GameOverActivity.PLAYER2_SCORE, AppConstants.getPlayer2Score());
+            intent.putExtra(GameOverActivity.GAME_DURATION, AppConstants.getGameDuration());
+            startActivity(intent);
+        }
     }
 
     @SuppressLint("NewApi")
@@ -125,4 +141,13 @@ public class StartActivity extends Activity {
         startActivity(intent);
     }
 
+    public void seeStatistics(View view) {
+        Intent intent = new Intent(this, StatisticsActivity.class);
+        startActivity(intent);
+    }
+
+    public void proba(View view) {
+        Intent intent = new Intent(this, GameOverActivity.class);
+        startActivity(intent);
+    }
 }

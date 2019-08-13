@@ -30,7 +30,7 @@ public class GameThread extends Thread {
 
             boolean game = AppConstants.isGameOver();
 
-            if (!AppConstants.isGameOver() && canvas != null) {
+            if (!AppConstants.isGameOver() && canvas != null && isRunning) {
                 synchronized (mySurfaceHolder) {
                     //izracunavanje novih pozicija svih komponenata i njihovo iscrtavanje
                     AppConstants.getGameEngine().draw(canvas);
@@ -40,14 +40,13 @@ public class GameThread extends Thread {
             if (canvas != null)
                 mySurfaceHolder.unlockCanvasAndPost(canvas);
 
-            if (AppConstants.isGameOver()){
-                isRunning = false;
-                AppConstants.stopThread(this);
-            }
-            try {
-                sleep(THREAD_SLEEP_TIME);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+            if (isRunning) {
+                try {
+                    sleep(THREAD_SLEEP_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
